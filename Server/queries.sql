@@ -23,3 +23,22 @@ VALUES(1, '123 pickup st.', '456 dropoff rd.', '2023-10-25', 'This is a job', '2
 --Create schedule
 INSERT INTO schedule (schedule_date, schedule)
 VALUES('2023-10-25', '[{"jobs": [2], "crew": [1], "trucks": [1]}]');
+
+SELECT schedule FROM schedule WHERE schedule_date='2023-10-27'; 
+
+-- Update a schedule given a date
+UPDATE schedule
+SET schedule=$1
+WHERE schedule_date=$2
+RETURNING *;
+
+-- Get all crew that ID is not in array
+SELECT *
+FROM users
+WHERE NOT user_id = ANY ($1);
+
+-- Get all trucks that ID is not in array
+SELECT *
+FROM truck
+WHERE NOT truck_id = ANY ($1);
+
