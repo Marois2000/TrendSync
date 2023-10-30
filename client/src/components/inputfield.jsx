@@ -4,7 +4,7 @@
 import React from "react";
 
 /**
- * Input text field
+ * @description Input text field
  * 
  * 
  * @param {*} title Text to be displayed above input

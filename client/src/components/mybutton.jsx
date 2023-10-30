@@ -12,9 +12,9 @@ import React from "react";
  */
 export const MyButton = ({ update, text}) => {
     return (
-        <div className="w-full flex items-center justify-center">
+        <div className="flex items-center justify-center">
             <button
-            className="bg-secondary-200 text-white mt-7 text-3xl p-3 rounded-lg border-2 border-secondary-300 drop-shadow-xl focus:bg-secondary-100"
+            className="bg-secondary-200 text-white text-2xl py-1 px-3 rounded-lg border-2 border-secondary-300 drop-shadow-xl focus:bg-secondary-100"
             onClick={update}>
                 {text}
             </button>
