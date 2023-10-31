@@ -10,8 +10,7 @@ export const AddJob = () => {
     const [customer, setCustomer] = useState({});
 
     const update = (custom) => {
-        console.log(custom.first_name);
-        setCustomer(custom)
+        setCustomer(custom);
     }
 
     const customers = [
@@ -39,14 +38,33 @@ export const AddJob = () => {
       
 
     return (
-        <div className="flex flex-col justify-evenly space-y-10">
-            <div className="p-3 flex items-center justify-between border-b-2 border-primary mx-9 mt-9">
+        <div className="flex flex-col items-center justify-evenly space-y-5">
+            <div className="z-40 w-[80vw] p-3 flex items-center justify-between border-b-2 border-primary mx-9 mt-9">
                 <CustomerFilterList customers={customers} customer={customer} setCustomer={update}/>
                 <MyButton text="Add Customer"/>
             </div>
-            <div>
-                <h1>rgqerg</h1>
+            <div className="flex gap-10 justify-center items-center w-[80vw]">
+                <InputField title="Pickup Address" placeholder="123 Main St, City, State, Zip"/>
+                <InputField title="Dropoff Address" placeholder="123 Main St, City, State, Zip"/>
             </div>
+            <div className="flex gap-10 justify-center items-center w-[80vw]">
+                <InputField title="Number of Trucks" number={true} placeholder="Enter Number of Trucks"/>
+                <InputField title="Number of Crew" number={true} placeholder="Enter Number of Crew"/>
+            </div>
+            <div className="flex gap-10 justify-center items-center w-[80vw]">
+                <InputField title="Date" date={true}/>
+                <InputField title="Rate" number={true} placeholder="Enter the Rate"/>
+                <InputField title="Estimate" number={true} placeholder="Enter the Estimated Time"/>
+            </div>
+            <div className="flex gap-10 justify-center items-center w-[80vw]">
+                <div className="w-full">
+                    <h2 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Notes</h2>
+                    <textarea type="text"
+                        className="drop-shadow appearance-none block w-full bg-gray-200 text-gray-700 border border-primary rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    />
+                </div>
+            </div>
+            <MyButton text="Add Job"/>
         </div>
     )
 }

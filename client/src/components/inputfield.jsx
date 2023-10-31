@@ -14,11 +14,11 @@ import React from "react";
  * @param {*} hidden If true block text, otherwise show text
  * @returns 
  */
-export const InputField = ({title, value, placeholder, onChange, hidden }) => {
+export const InputField = ({title, value, placeholder, onChange, hidden, number, date }) => {
     return(
-        <div>
+        <div className="w-full">
             <h2 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">{title}</h2>
-            <input type={hidden ? "password": "text"}
+            <input type={hidden ? "password" : number ? "number" : date ? "date" : "text"}
                 className="drop-shadow appearance-none block w-full bg-gray-200 text-gray-700 border border-primary rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                 placeholder={placeholder}
                 value={value} 

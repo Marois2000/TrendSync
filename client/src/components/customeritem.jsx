@@ -3,11 +3,12 @@
  */
 import React from "react";
 
-export const CustomerItem = ({ customer, setCustomer, changeSearch}) => {
+export const CustomerItem = ({ customer, setCustomer, changeSearch, setSearching}) => {
 
     const update = () => {
         setCustomer(customer);
         changeSearch(`${customer.last_name}, ${customer.first_name}`);
+        setSearching(false);
     }
 
     return(
