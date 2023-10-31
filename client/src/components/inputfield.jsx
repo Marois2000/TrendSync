@@ -4,7 +4,7 @@
 import React from "react";
 
 /**
- * @description Input text field
+ * @description Input text field component
  * 
  * 
  * @param {*} title Text to be displayed above input
@@ -12,7 +12,9 @@ import React from "react";
  * @param {*} placeholder Default placeholder text
  * @param {*} onChange Updates the state of the field
  * @param {*} hidden If true block text, otherwise show text
- * @returns 
+ * @param {*} number Changes the field to a number input
+ * @param {*} date Changes the field to be a date input
+ * @returns An input field with the selected input
  */
 export const InputField = ({title, value, placeholder, onChange, hidden, number, date }) => {
     return(

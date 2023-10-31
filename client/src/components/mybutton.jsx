@@ -8,7 +8,7 @@ import React from "react";
  * 
  * @param {*} update The function to be called on button press passed from parent 
  * @param {*} text Text to be displayed for the button
- * @returns 
+ * @returns A button to trigger a function
  */
 export const MyButton = ({ update, text}) => {
     return (

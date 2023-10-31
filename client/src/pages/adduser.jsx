@@ -8,14 +8,23 @@ import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/**
+ * @description The add user page
+ * 
+ * @returns An html form for adding users/crew into the database
+ */
 export const AddUser = () => {
-    const [first, setFirst] = useState(""); //The users first name
-    const [last, setLast] = useState(""); //The users last name
-    const [email, setEmail] = useState(""); //The users email
-    const [password, setPassword] = useState(""); //The users password
-    const [rank, setRank] = useState(null);
+    const [first, setFirst] = useState(""); // The users first name
+    const [last, setLast] = useState(""); // The users last name
+    const [email, setEmail] = useState(""); // The users email
+    const [password, setPassword] = useState(""); // The users password
+    const [rank, setRank] = useState(0); // The users rank
 
-
+    /**
+     * @description Calls the API and enters a user into the database
+     * 
+     * @param {*} e The event, to stop the refresh
+     */
     const addUserToDatabase = async e => {
         e.preventDefault();
 
@@ -38,8 +47,6 @@ export const AddUser = () => {
             });
 
             const res = await req.json();
-
-            console.log(res[0]);
             toast.success('User Added', {
                 position: "top-center",
                 autoClose: 2000,
@@ -55,19 +62,7 @@ export const AddUser = () => {
             console.log(error.message);
         }
     }
-
-
-    const bindRank = (value) => {
-        if(value >= 3) {
-            setRank(0);
-        } else if(value < 0) {
-            setRank(2);
-        } else {
-            setRank(value);
-        }
-    }
     
-
     return (
         <div className="flex flex-col w-full justify-center items-center">
             <div className="flex gap-10 justify-center items-center w-[80vw] mt-20">
@@ -80,7 +75,7 @@ export const AddUser = () => {
             </div>
             <div className="flex gap-10 justify-start items-center w-[80vw] mt-5">
                 <div>
-                    <InputField title="Rank" number={true} value={rank} placeholder="0-2" onChange={(e) => bindRank(e.target.value)}/>
+                    <InputField title="Rank" number={true} value={rank} placeholder="0-2" onChange={(e) => setRank(e.target.value % 3)}/>
                 </div>
             </div>
             <div className="flex justify-start w-[80vw] mt-5">

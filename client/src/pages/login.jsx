@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
  * @description The login page of the admin website
  * 
  * @param loginSetter function that runs when user attempts a login
+ * @param userSetter sets the user in the application for use elsewhere
  * @returns html to display the login page
  */
 export const Login = ( {loginSetter, userSetter} ) => {

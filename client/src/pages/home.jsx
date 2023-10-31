@@ -6,6 +6,7 @@ import { Header } from "../components/header";
 import { JobBoard } from "./jobboard";
 import { AddJob } from "./addjob";
 import { AddUser } from "./adduser";
+import { AddTruck } from "./addtruck";
 
 /**
  * @description Renders out all the pages of the application
@@ -63,7 +64,7 @@ export const Home = ({ user }) => {
             {jobBoard ? <JobBoard /> : null}
             {addJob ? <AddJob /> : null}
             {addUser ? <AddUser /> : null}
-            {addTruck ? <h1>Add Truck</h1> : null}
+            {addTruck ? <AddTruck /> : null}
 
         </div>
     )

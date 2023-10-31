@@ -4,19 +4,29 @@
 import React, { useState } from "react";
 import { CustomerItem } from "./customeritem";
 
+/**
+ * @description The customer search box, a dropdown of all the customers
+ * 
+ * @param {*} customer The current customer
+ * @param {*} customers List of all the customers
+ * @param {*} setCustomer Sets the current customer
+ * @returns 
+ */
 export const CustomerFilterList = ({ customers, customer, setCustomer}) => {
     const [search, setSearch] = useState("");
     const [filteredCustomers, setFilteredCustomers] = useState(customers);
     const [searching, setSearching] = useState(false);
     
-
+    /**
+     * @description Filters all the customers in the dropdown box
+     */
     const filterList = () => {
         setFilteredCustomers(customers.filter(customer => customer.first_name.toLowerCase().includes(search.toLowerCase()) || customer.last_name.toLowerCase().includes(search.toLowerCase())));
     }
 
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex items-center pb-3">
                 <div className="flex flex-col">
                     <h2 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Customer</h2>
                     <div className="flex">
