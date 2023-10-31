@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Header } from "../components/header";
 import { JobBoard } from "./jobboard";
 import { AddJob } from "./addjob";
+import { AddUser } from "./adduser";
 
 /**
  * @description Renders out all the pages of the application
@@ -24,7 +25,6 @@ export const Home = ({ user }) => {
      * @param index The page to go to
      */
     const updatePage = (index) => {
-        console.log(index);
         switch(index) {
             case 0:
                 setJobBoard(true);
@@ -62,7 +62,7 @@ export const Home = ({ user }) => {
             <Header updatePage={updatePage} user={user}/>
             {jobBoard ? <JobBoard /> : null}
             {addJob ? <AddJob /> : null}
-            {addUser ? <h1>Add User</h1> : null}
+            {addUser ? <AddUser /> : null}
             {addTruck ? <h1>Add Truck</h1> : null}
 
         </div>
