@@ -14,7 +14,7 @@ export const MyButton = ({ update, text}) => {
     return (
         <div className="flex items-center justify-center">
             <button
-            className="bg-secondary-200 text-white text-2xl py-1 px-3 rounded-lg border-2 border-secondary-300 drop-shadow-xl focus:bg-secondary-100"
+            className="bg-secondary-200 text-white text-xl py-1 px-3 rounded-lg border-2 border-secondary-300 drop-shadow-xl focus:bg-secondary-100"
             onClick={update}>
                 {text}
             </button>

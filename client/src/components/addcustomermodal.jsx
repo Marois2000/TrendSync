@@ -8,6 +8,15 @@ import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/**
+ * @description A popup window to add a customer to the database
+ * 
+ * @param {*} isOpen Boolean if the modal should be open
+ * @param {*} onClose The function to close the modal
+ * @param {*} setCustomer Sets the customers state
+ * @param {*} updateCustomers Updates the list of customers
+ * @returns HTML for a popup modal
+ */
 export const AddCustomerModal = ({ isOpen, onClose, setCustomer, updateCustomers }) => {
     const [first, setFirst] = useState("");
     const [last, setLast] = useState("");
@@ -18,7 +27,13 @@ export const AddCustomerModal = ({ isOpen, onClose, setCustomer, updateCustomers
     ? 'fixed inset-0 flex items-center justify-center z-40 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50'
     : 'hidden';
 
+    /**
+     * @description Adds a customer to the database
+     * 
+     * @param e The event used to prevent default refresh
+     */
     const addCustomerToDatabase = async e => {
+        e.preventDefault();
         const body = {
             first: first,
             last: last,
