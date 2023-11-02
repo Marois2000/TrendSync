@@ -11,7 +11,9 @@ import { Tab } from './tab';
  * @param {*} updatePage The function used to change the state that controls which page is displayed
  * @returns A header with tabs/buttons to control the app
  */
-export const Header = ({ user, updatePage }) => {
+export const Header = ({ user, updatePage, pageColors }) => {
+
+
     return (
         <div className="flex-col bg-primary">
             <div className="flex justify-between items-center">
@@ -19,7 +21,7 @@ export const Header = ({ user, updatePage }) => {
                 <h1 className="text-xl p-2 text-white">Welcome, {user.first_name}</h1>
             </div>
             <div className="bg-grey-100 flex">
-                <Tab title="Job Board" updatePage={() => updatePage(0)}/>
+                <Tab title="Job Board" updatePage={() => updatePage(0)} color={pageColors[0]}/>
                 <Tab title="Add Job" updatePage={() => updatePage(1)}/>
                 <Tab title="Add User" updatePage={() => updatePage(2)}/>
                 <Tab title="Add Truck" updatePage={() => updatePage(3)}/>

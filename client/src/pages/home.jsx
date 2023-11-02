@@ -19,6 +19,7 @@ export const Home = ({ user }) => {
     const [addJob, setAddJob] = useState(false);
     const [addUser, setAddUser] = useState(false);
     const [addTruck, setAddTruck] = useState(false);
+    const [pages, setPages] = useState([jobBoard, addJob, addUser, addTruck]);
 
     /**
      * @description Switches the state of which page to display based off the index
@@ -55,12 +56,14 @@ export const Home = ({ user }) => {
                 setAddTruck(true);
             break;
         }
+        setPages([jobBoard, addJob, addUser, addTruck]);
+        console.log(pages);
     }
 
 
     return (
         <div className="h-[100vh] flex-col justify-center items-start">
-            <Header updatePage={updatePage} user={user}/>
+            <Header updatePage={updatePage} user={user} pageColors={pages}/>
             {jobBoard ? <JobBoard /> : null}
             {addJob ? <AddJob /> : null}
             {addUser ? <AddUser /> : null}

@@ -10,10 +10,14 @@ import React from "react";
  * @param {*} title What text to display 
  * @returns A button with the title and an onclick for the updatePage
  */
-export const Tab = ({ updatePage, title }) => {
+export const Tab = ({ updatePage, title, colored }) => {
+    const color = colored ? 'bg-primary' : 'bg-grey-200';
+    const style = 'text-white text-xl mt-1 ml-1 py-1 px-3 rounded-t-lg ' + color;
+
+    console.log(colored);
     return (
         <button
-            className="bg-grey-200 text-white text-xl mt-1 ml-1 py-1 px-3 rounded-t-lg  focus:bg-primary"
+            className={style}
             onClick={updatePage}>
                 {title}
         </button>
