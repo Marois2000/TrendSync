@@ -16,12 +16,22 @@ app.post('/trendsync/login', async(req, res) => {
     try {
         const {email, password} = req.body;
         const query = await pool.query("SELECT * FROM users WHERE email=$1 AND password=$2;", [email, password]);
-        console.log(email);
-        console.log(query.rows);
 
         res.json(query.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/trendsync/customers', async(req, res) => {
+    try {
+        const query = await pool.query("SELECT * FROM customer;");
+
+        res.json(query.rows);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -37,6 +47,7 @@ app.post('/trendsync/addcustomer', async(req, res) => {
         res.json(query.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -51,6 +62,7 @@ app.post('/trendsync/addtruck', async(req, res) => {
         res.json(query.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -66,6 +78,7 @@ app.post('/trendsync/adduser', async(req, res) => {
         res.json(query.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -74,13 +87,14 @@ app.post('/trendsync/adduser', async(req, res) => {
  */
 app.post('/trendsync/addjob', async(req, res) => { 
     try {
-        const { customerId, pickup, dropoff, date, notes, estimate, rate } = req.body;
-        const query = await pool.query('INSERT INTO job (customer_id, pickup, dropoff, job_date, notes, estimate, rate) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
-        [customerId, pickup, dropoff, date, notes, estimate, rate]);
+        const { customerId, pickup, dropoff, crew, trucks, date, notes, estimate, rate } = req.body;
+        const query = await pool.query('INSERT INTO job (customer_id, pickup, dropoff, job_date, notes, estimate, rate, num_crew, num_trucks) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;',
+        [customerId, pickup, dropoff, date, notes, estimate, rate, crew, trucks]);
 
         res.json(query.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -91,7 +105,6 @@ app.post('/trendsync/addjob', async(req, res) => {
 app.post('/trendsync/initschedule', async(req, res) => {
     try {
         const {date} = req.body;
-        console.log(date);
         const schedule = {
             "timeslots": []
         }
@@ -102,6 +115,7 @@ app.post('/trendsync/initschedule', async(req, res) => {
         res.json(query.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -117,6 +131,7 @@ app.put('/trendsync/updateschedule', async(req, res) => {
         res.json(query.rows[0]);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -143,6 +158,7 @@ app.get('/trendsync/getcrew', async(req, res) => {
         res.json(crewQuery.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -169,6 +185,7 @@ app.get('/trendsync/gettrucks', async(req, res) => {
         res.json(trucksQuery.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -195,6 +212,7 @@ app.get('/trendsync/getjobs', async(req, res) => {
         res.json(jobsQuery.rows);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 

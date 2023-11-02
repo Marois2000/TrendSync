@@ -1,7 +1,7 @@
 /**
  * @author Tyler Marois
  */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CustomerItem } from "./customeritem";
 
 /**
@@ -17,6 +17,17 @@ export const CustomerFilterList = ({ customers, customer, setCustomer}) => {
     const [filteredCustomers, setFilteredCustomers] = useState(customers);
     const [searching, setSearching] = useState(false);
     
+    useEffect(() => {
+        filterList();
+    }, [customers]);
+
+    useEffect(() => {
+        if(customer && customer.last_name && customer.first_name) {
+            setSearch(customer.last_name + ", " + customer.first_name);
+            filterList();
+        }
+    }, [customer]);
+
     /**
      * @description Filters all the customers in the dropdown box
      */
