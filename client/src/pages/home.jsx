@@ -56,8 +56,6 @@ export const Home = ({ user }) => {
                 setAddTruck(true);
             break;
         }
-        setPages([jobBoard, addJob, addUser, addTruck]);
-        console.log(pages);
     }
 
 
