@@ -9,6 +9,7 @@ import { Tab } from './tab';
  * 
  * @param {*} user The users information
  * @param {*} updatePage The function used to change the state that controls which page is displayed
+ * @param {*} pageColors An array of booleans telling which tab to be colored
  * @returns A header with tabs/buttons to control the app
  */
 export const Header = ({ user, updatePage, pageColors }) => {
@@ -21,10 +22,10 @@ export const Header = ({ user, updatePage, pageColors }) => {
                 <h1 className="text-xl p-2 text-white">Welcome, {user.first_name}</h1>
             </div>
             <div className="bg-grey-100 flex">
-                <Tab title="Job Board" updatePage={() => updatePage(0)} color={pageColors[0]}/>
-                <Tab title="Add Job" updatePage={() => updatePage(1)}/>
-                <Tab title="Add User" updatePage={() => updatePage(2)}/>
-                <Tab title="Add Truck" updatePage={() => updatePage(3)}/>
+                <Tab title="Job Board" updatePage={() => updatePage(0)} colored={pageColors[0]}/>
+                <Tab title="Add Job" updatePage={() => updatePage(1)} colored={pageColors[1]}/>
+                <Tab title="Add User" updatePage={() => updatePage(2)} colored={pageColors[2]}/>
+                <Tab title="Add Truck" updatePage={() => updatePage(3)} colored={pageColors[3]}/>
             </div>
         </div>
     )

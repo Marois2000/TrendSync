@@ -120,6 +120,23 @@ app.post('/trendsync/initschedule', async(req, res) => {
 });
 
 /**
+ * Get a Schedule
+ */
+app.post('/trendsync/getschedule', async(req, res) => {
+    try {
+        const {date} = req.body;
+
+        const query = await pool.query('SELECT * FROM schedule WHERE schedule_date=$1;',
+        [date]);
+
+        res.json(query.rows);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
  * Updates a schedule
  */
 app.put('/trendsync/updateschedule', async(req, res) => {
@@ -138,20 +155,23 @@ app.put('/trendsync/updateschedule', async(req, res) => {
 /**
  * Get all users not on the schedule for a given date
  */
-app.get('/trendsync/getcrew', async(req, res) => {
+app.post('/trendsync/getcrew', async(req, res) => {
     try {
         const { date } = req.body;
         const scheduleQuery = await pool.query('SELECT schedule FROM schedule WHERE schedule_date=$1;', [date]);
-        const { timeslots } = scheduleQuery.rows[0].schedule;
         let crewOnJob = [];
-        timeslots.forEach(timeslot => {
-            const crew = timeslot.crew;
-            crew.forEach(crewMember => {
-                if(!crewOnJob.includes(crewMember)) {
-                    crewOnJob = [...crewOnJob, crewMember];
-                }
+        if(scheduleQuery.rows.length > 0) {
+            const { timeslots } = scheduleQuery.rows[0].schedule;
+            timeslots.forEach(timeslot => {
+                const crew = timeslot.crew;
+                crew.forEach(crewMember => {
+                    if(!crewOnJob.includes(crewMember.user_id)) {
+                        crewOnJob = [...crewOnJob, crewMember.user_id];
+                    }
+                });
             });
-        });
+        }
+        
         const crewQuery = await pool.query('SELECT * FROM users WHERE NOT user_id = ANY ($1);', 
         [crewOnJob]);
         
@@ -165,20 +185,22 @@ app.get('/trendsync/getcrew', async(req, res) => {
 /**
  * Get all trucks not on the schedule for a given date
  */
-app.get('/trendsync/gettrucks', async(req, res) => {
+app.post('/trendsync/gettrucks', async(req, res) => {
     try {
         const { date } = req.body;
         const scheduleQuery = await pool.query('SELECT schedule FROM schedule WHERE schedule_date=$1;', [date]);
-        const { timeslots } = scheduleQuery.rows[0].schedule;
         let trucksOnJob = [];
-        timeslots.forEach(timeslot => {
-            const trucks = timeslot.trucks;
-            trucks.forEach(truck => {
-                if(!trucksOnJob.includes(truck)) {
-                    trucksOnJob = [...trucksOnJob, truck];
-                }
+        if(scheduleQuery.rows.length > 0) {
+            const { timeslots } = scheduleQuery.rows[0].schedule;
+            timeslots.forEach(timeslot => {
+                const trucks = timeslot.trucks;
+                trucks.forEach(truck => {
+                    if(!trucksOnJob.includes(truck.truck_id)) {
+                        trucksOnJob = [...trucksOnJob, truck.truck_id];
+                    }
+                });
             });
-        });
+        }
         const trucksQuery = await pool.query('SELECT * FROM truck WHERE NOT truck_id = ANY ($1);', 
         [trucksOnJob]);
         
@@ -192,22 +214,25 @@ app.get('/trendsync/gettrucks', async(req, res) => {
 /**
  * Get all jobs not on the schedule for a given date
  */
-app.get('/trendsync/getjobs', async(req, res) => {
+app.post('/trendsync/getjobs', async(req, res) => {
     try {
         const { date } = req.body;
         const scheduleQuery = await pool.query('SELECT schedule FROM schedule WHERE schedule_date=$1;', [date]);
-        const { timeslots } = scheduleQuery.rows[0].schedule;
         let jobsOnSchedule = [];
-        timeslots.forEach(timeslot => {
-            const jobs = timeslot.jobid;
-            jobs.forEach(job => {
-                if(!jobsOnSchedule.includes(job)) {
-                    jobsOnSchedule = [...jobsOnSchedule, job];
-                }
+        if(scheduleQuery.rows.length > 0) {
+            const { timeslots } = scheduleQuery.rows[0].schedule;
+            timeslots.forEach(timeslot => {
+                const jobs = timeslot.jobid;
+                jobs.forEach(job => {
+                    if(!jobsOnSchedule.includes(job.job_id)) {
+                        jobsOnSchedule = [...jobsOnSchedule, job.job_id];
+                    }
+                });
             });
-        });
-        const jobsQuery = await pool.query('SELECT * FROM job WHERE NOT job_id = ANY ($1);', 
-        [jobsOnSchedule]);
+        }
+        const jobsQuery = await pool.query('SELECT * FROM job WHERE NOT job_id = ANY ($1) AND job_date=$2;', 
+        [jobsOnSchedule, date]);
+
         
         res.json(jobsQuery.rows);
     } catch (error) {
@@ -216,8 +241,36 @@ app.get('/trendsync/getjobs', async(req, res) => {
     }
 });
 
+/**
+ * Gets a customer with an id
+ */
+app.post('/trendsync/getcustomer', async(req, res) => {
+    try {
+        const { id } = req.body;
+        const query = await pool.query('SELECT * FROM customer WHERE customer_id=$1;',
+        [id]);
+
+        res.json(query.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
 
 
+/**
+ * Gets all jobs
+ */
+app.post('/trendsync/getalljobs', async(req, res) => {
+    try {
+        const query = await pool.query('SELECT * FROM job;')
+
+        res.json(query.rows);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
 
 
 

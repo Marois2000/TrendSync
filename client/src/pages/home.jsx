@@ -1,7 +1,7 @@
 /**
  * @author Tyler Marois
  */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../components/header";
 import { JobBoard } from "./jobboard";
 import { AddJob } from "./addjob";
@@ -57,6 +57,13 @@ export const Home = ({ user }) => {
             break;
         }
     }
+
+    /**
+     * Update the pages state array based on the latest state values
+     */
+    useEffect(() => {
+        setPages([jobBoard, addJob, addUser, addTruck]);
+    }, [jobBoard, addJob, addUser, addTruck]);
 
 
     return (

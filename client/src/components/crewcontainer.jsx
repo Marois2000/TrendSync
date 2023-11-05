@@ -3,14 +3,34 @@
  */
 import React, { useState, useEffect } from "react";
 import { JobAsset } from "./jobasset";
+import { path } from "../path";
 
-export const CrewContainer = () => {
-    const [crews, setCrews] = useState([]);
+export const CrewContainer = ({ crews, setCrew, date }) => {
 
-    
+    useEffect(() => {
+        getCrewMembers();
+    }, [date]);
+
 
     const getCrewMembers = async() => {
-        
+        const body = {
+            date: date
+        }
+        try {
+            const req = await fetch(path+"/trendsync/getcrew", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+            const res = await req.json();
+
+            setCrew(res);
+        } catch (error) {
+            console.log(error);
+        }
     }
     
       
@@ -22,11 +42,13 @@ export const CrewContainer = () => {
                 <h2 className="text-white text-xl text-center">Crew</h2>
             </div>
             <div className="flex flex-col rounded-b-lg h-[35vh] bg-grey-100 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 items-center ">
-                {crews.map((crew) => {
-                    return(
-                        <JobAsset name={crew.last_name + ", " + crew.first_name}/>   
-                    )
-                })}
+                {crews.length === 0 ? (
+                    <div className="spinner animate-ping">Loading...</div>
+                ) : (
+                    crews.map((crew, index) => (
+                    <JobAsset key={index} name={crew.last_name + ", " + crew.first_name} type={'crew'} crew={crew}/>
+                    ))
+                )}
             </div>
         </div>
     )
