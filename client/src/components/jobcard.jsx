@@ -45,7 +45,7 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, 
 
     return (
         <div className="flex flex-col justify-center items-center m-1" ref={dragRef}>
-            <div className="bg-grey-200 w-[20vh] rounded-t-lg">
+            <div className="bg-grey-200 w-[12vw] rounded-t-lg">
                 <h1 className="text-white text-lg m-1">{title}</h1>
             </div>
             <div className=" border-y-2 border-black w-full flex flex-col justify-center">

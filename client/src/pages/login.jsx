@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import { InputField } from "../components/inputfield";
 import { MyButton } from "../components/mybutton";
+import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,7 +31,7 @@ export const Login = ( {loginSetter, userSetter} ) => {
             password: password
         }
         try {
-            const res = await fetch('http://localhost:5000/trendsync/login', {
+            const res = await fetch(path+'/trendsync/login', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

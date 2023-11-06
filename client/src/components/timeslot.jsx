@@ -50,7 +50,7 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule}) =>
 
     return (
         <div className="flex bg-background border-b-2 border-black mt-3 w-[99%] z-10" ref={dropRef}>
-            <div className="h-[20vh] w-[20vh] flex flex-col border-e-2 border-black">
+            <div className="h-[25vh] w-[30vh] flex flex-col border-e-2 border-black">
                 <div className="w-full bg-grey-200 flex justify-center ">
                     <h2 className="text-white text-sm">Crew</h2>
                 </div>
@@ -63,7 +63,7 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule}) =>
 
                 </div>
             </div>
-            <div className="h-[20vh] w-[15vh] flex flex-col border-e-2 border-black">
+            <div className="h-[25vh] w-[15vh] flex flex-col border-e-2 border-black">
                 <div className="w-full bg-grey-200 flex justify-center ">
                     <h2 className="text-white text-sm">Trucks</h2>
                 </div>
@@ -75,7 +75,7 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule}) =>
                     })}
                 </div>
             </div>
-            <div className="w-full flex rounded-e-lg h-[20vh] bg-grey-100 overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 px-2">
+            <div className="w-full flex rounded-e-lg h-[25vh] bg-grey-100 overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 px-2">
                     {jobs.map((job) => {
                         return (
                             <JobCard index={index} crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type="job" job={job}/>

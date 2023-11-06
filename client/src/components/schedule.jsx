@@ -100,7 +100,7 @@ export const Schedule = ({ date, setDate, schedule, setSchedule}) => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center m-5">
+        <div className="flex flex-col justify-center items-center mx-5">
             <div className="flex justify-end items-center w-full">
                 <div className="flex gap-5">
                     <InputField date={true} value={date} onChange={(e) => setDate(e.target.value)}/>
@@ -115,7 +115,7 @@ export const Schedule = ({ date, setDate, schedule, setSchedule}) => {
             <div className="bg-secondary-200 flex justify-center items-center w-full rounded-t-lg">
                 <h1 className="text-white text-xl">Schedule</h1>
             </div>
-            <div className="flex flex-col rounded-b-lg h-[50vh] bg-grey-100 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 items-center w-full">
+            <div className="flex flex-col rounded-b-lg h-[50vh] bg-grey-100 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 items-center w-full border-grey-100 border-4">
                 {schedule.map((timeslot, index) => {
                     return (
                         <TimeSlot index={index} crew={timeslot.crew} trucks={timeslot.trucks} jobs={timeslot.jobid} schedule={schedule} setSchedule={setSchedule} />

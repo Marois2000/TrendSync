@@ -65,7 +65,7 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule}) => {
     }
 
     return (
-        <div className="flex rounded-lg m-5" ref={dropRef}>
+        <div className="flex rounded-lg mx-5 my-2" ref={dropRef}>
             <div className="bg-secondary-200 rounded-s-lg h-[20vh] flex justify-center items-center">
                 <h2 className="text-white text-xl text-center m-2">Jobs</h2>
             </div>
