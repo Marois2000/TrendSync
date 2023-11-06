@@ -55,9 +55,9 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule}) =>
                     <h2 className="text-white text-sm">Crew</h2>
                 </div>
                 <div className="flex flex-wrap overflow-hidden">
-                    {crew.map((crewMember, index) => {
+                    {crew.map((crewMember) => {
                         return (
-                            <JobAsset key={index} name={crewMember.last_name + ", " + crewMember.first_name} mini={true}/>
+                            <JobAsset name={crewMember.last_name + ", " + crewMember.first_name} mini={true} index={index} type="crew" crew={crewMember}/>
                         )
                     })}
 
@@ -68,17 +68,17 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule}) =>
                     <h2 className="text-white text-sm">Trucks</h2>
                 </div>
                 <div className="flex flex-wrap overflow-hidden">
-                    {trucks.map((truck, index) => {
+                    {trucks.map((truck) => {
                         return (
-                            <JobAsset key={index} name={truck.name} mini={true}/>
+                            <JobAsset index={index} name={truck.name} mini={true} type="truck" truck={truck}/>
                         )
                     })}
                 </div>
             </div>
             <div className="w-full flex rounded-e-lg h-[20vh] bg-grey-100 overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 px-2">
-                    {jobs.map((job, index) => {
+                    {jobs.map((job) => {
                         return (
-                            <JobCard key={index} crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id}/>
+                            <JobCard index={index} crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type="job" job={job}/>
                         )
                     })}
 

@@ -6,7 +6,7 @@ import { path } from "../path";
 import { useDrag } from "react-dnd";
 
 
-export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job}) => {
+export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, index}) => {
     const [title, setTitle] = useState("");
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job})
 
     const[{ isDragging }, dragRef] = useDrag({
         type: 'asset',
-        item: {crew, trucks, pickup, dropoff, customerId, type, job},
+        item: {crew, trucks, pickup, dropoff, customerId, type, job, index},
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })

@@ -4,8 +4,10 @@
 import React, { useState, useEffect} from "react";
 import { JobCard } from "./jobcard";
 import { path } from "../path";
+import { useDrop } from "react-dnd";
 
-export const JobContainer = ({ jobs, setJobs, date}) => {
+
+export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule}) => {
 
     useEffect(() => {
         getJobs();
@@ -29,13 +31,41 @@ export const JobContainer = ({ jobs, setJobs, date}) => {
 
             setJobs(res);
         } catch (error) {
-            
             console.log(error); 
         }
     }
 
+    const[{ isOver }, dropRef] = useDrop({
+        accept: 'asset',
+        drop: (item) => handleDrop(item),
+        collect: (monitor) => ({
+            isOver: monitor.isOver()
+        })
+    });
+
+    const handleDrop = (item) => {
+        let copyOfSlot = schedule[item.index];
+        let jobsList = copyOfSlot.jobid;
+        let updatedSchedule = [...schedule];
+
+        if(item.type == 'job') {
+
+            let newJobs = jobsList.filter((job) => job != item.job);
+
+            copyOfSlot = {
+                jobid: newJobs,
+                crew: copyOfSlot.crew,
+                trucks: copyOfSlot.trucks
+            }
+            
+            updatedSchedule[item.index] = copyOfSlot;
+            setSchedule(updatedSchedule);
+            setJobs([...jobs, item.job]);
+        } 
+    }
+
     return (
-        <div className="flex rounded-lg m-5">
+        <div className="flex rounded-lg m-5" ref={dropRef}>
             <div className="bg-secondary-200 rounded-s-lg h-[20vh] flex justify-center items-center">
                 <h2 className="text-white text-xl text-center m-2">Jobs</h2>
             </div>

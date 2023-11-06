@@ -4,9 +4,9 @@
 import React, { useEffect } from "react";
 import { JobAsset } from "./jobasset";
 import { path } from "../path";
+import { useDrop } from "react-dnd";
 
-
-export const TruckContainer = ({ trucks, setTrucks, date}) => {
+export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule}) => {
 
     useEffect(() => {
         getTrucks();
@@ -34,8 +34,37 @@ export const TruckContainer = ({ trucks, setTrucks, date}) => {
         }
     }
 
+    const[{ isOver }, dropRef] = useDrop({
+        accept: 'asset',
+        drop: (item) => handleDrop(item),
+        collect: (monitor) => ({
+            isOver: monitor.isOver()
+        })
+    });
+
+    const handleDrop = (item) => {
+        let copyOfSlot = schedule[item.index];
+        let truckList = copyOfSlot.trucks;
+        let updatedSchedule = [...schedule];
+
+        if(item.type == 'truck') {
+
+            let newTrucks = truckList.filter((truck) => truck != item.truck);
+
+            copyOfSlot = {
+                jobid: copyOfSlot.jobid,
+                crew: copyOfSlot.crew,
+                trucks: newTrucks
+            }
+            
+            updatedSchedule[item.index] = copyOfSlot;
+            setSchedule(updatedSchedule);
+            setTrucks([...trucks, item.truck]);
+        } 
+    }
+
     return (
-        <div className="flex flex-col rounded-lg w-[25vh]">
+        <div className="flex flex-col rounded-lg w-[25vh]" ref={dropRef}>
             <div className="bg-secondary-200 rounded-t-lg">
                 <h2 className="text-white text-xl text-center">Trucks</h2>
             </div>

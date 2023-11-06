@@ -4,13 +4,13 @@
 import React, { useState, useEffect } from "react";
 import { JobAsset } from "./jobasset";
 import { path } from "../path";
+import { useDrop } from "react-dnd";
 
-export const CrewContainer = ({ crews, setCrew, date }) => {
+export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule }) => {
 
     useEffect(() => {
         getCrewMembers();
     }, [date]);
-
 
     const getCrewMembers = async() => {
         const body = {
@@ -32,12 +32,41 @@ export const CrewContainer = ({ crews, setCrew, date }) => {
             console.log(error);
         }
     }
+
+    const[{ isOver }, dropRef] = useDrop({
+        accept: 'asset',
+        drop: (item) => handleDrop(item),
+        collect: (monitor) => ({
+            isOver: monitor.isOver()
+        })
+    });
+
+    const handleDrop = (item) => {
+        let copyOfSlot = schedule[item.index];
+        let crewList = copyOfSlot.crew;
+        let updatedSchedule = [...schedule];
+
+        if(item.type == 'crew') {
+
+            let newCrew = crewList.filter((crew) => crew != item.crew);
+
+            copyOfSlot = {
+                jobid: copyOfSlot.jobid,
+                crew: newCrew,
+                trucks: copyOfSlot.trucks
+            }
+            
+            updatedSchedule[item.index] = copyOfSlot;
+            setSchedule(updatedSchedule);
+            setCrew([...crews, item.crew]);
+        } 
+    }
     
       
 
 
     return(
-        <div className="flex flex-col rounded-lg w-[25vh]">
+        <div className="flex flex-col rounded-lg w-[25vh]" ref={dropRef}>
             <div className="bg-secondary-200 rounded-t-lg">
                 <h2 className="text-white text-xl text-center">Crew</h2>
             </div>
