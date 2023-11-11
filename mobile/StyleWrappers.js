@@ -1,9 +1,8 @@
 import { createStyleBuilder } from "react-native-zephyr";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 
 const { styles, useStyles, makeStyledComponent } = createStyleBuilder({
     extendTheme: {
-      // _Add_ some more colors
       colors: {
         primary: '#1B3F9C',
         secondary1: '#f59a4e',
@@ -14,6 +13,9 @@ const { styles, useStyles, makeStyledComponent } = createStyleBuilder({
         grey2: '#BFB7B7',
         grey3: '#374151'
       }
+    },
+    gap: {
+      
     }
   });
 
@@ -21,6 +23,7 @@ export const StyledView = makeStyledComponent(View);
 export const StyledText = makeStyledComponent(Text);
 export const StyledTextInput = makeStyledComponent(TextInput);
 export const StyledOpacity = makeStyledComponent(TouchableOpacity);
+export const StyledScroll = makeStyledComponent(ScrollView);
 
 
 

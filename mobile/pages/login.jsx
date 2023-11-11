@@ -14,7 +14,7 @@ export default LogIn = ({ setUser }) => {
 
     const login = async() => {
         const body = {
-            email: email,
+            email: email.toLowerCase(),
             password: password
         }
 
@@ -29,7 +29,7 @@ export default LogIn = ({ setUser }) => {
             });
             const data = await res.json();
 
-            console.log(data);
+            setUser(data[0]);
         } catch (error) {
             console.log(error.message);
         }
@@ -49,6 +49,7 @@ export default LogIn = ({ setUser }) => {
                 value={password}
                 placeholder="Enter your Password..."
                 onChange={e => setPassword(e)}
+                hidden={true}
             />          
             </StyledView>
 

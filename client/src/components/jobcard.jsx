@@ -17,6 +17,7 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, 
         const body = {
             id: customerId
         }
+        console.log(body)
         try {
             const req = await fetch(path+"/trendsync/getcustomer", {
                 method: 'POST',

@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const Schedule = ({ date, setDate, schedule, setSchedule}) => {
 
     useEffect(() => {
+        setSchedule([])
         getSchedule();
     }, [date]);
 

@@ -81,9 +81,6 @@ export const JobBoard = () => {
         setJobs(jobsNotOnSchedule);
     }
 
-    const getTodaysDate = () => {
-        
-    }
 
     return (
         <div className="flex w-full">

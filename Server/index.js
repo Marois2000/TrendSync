@@ -272,6 +272,36 @@ app.post('/trendsync/getalljobs', async(req, res) => {
     }
 });
 
+/**
+ * Gets a users job
+ */
+app.post('/trendsync/getusersjob', async(req, res) => {
+    try {
+        const { userId, date } = req.body;
+
+        const scheduleQuery = await pool.query('SELECT schedule FROM schedule WHERE schedule_date=$1;', [date]);
+        
+        let usersTimeslot = {};
+        if(scheduleQuery.rows.length > 0) {
+            const { timeslots } = scheduleQuery.rows[0].schedule;
+            timeslots.forEach(timeslot => {
+                const crew = timeslot.crew;
+                crew.forEach(crewMember => {
+                    if(crewMember.user_id == userId) {
+                        usersTimeslot = timeslot;
+                    }
+                });
+            });
+        }
+
+        res.json(usersTimeslot);
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
 
 
 
