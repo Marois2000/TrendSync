@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import path from "../path";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default JobCard = ({ job, crew, trucks}) => {
+export default JobCard = ({ job, crew, trucks, setJob}) => {
     const [title, setTitle] = useState("");
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default JobCard = ({ job, crew, trucks}) => {
     }
 
     return (
-        <StyledOpacity classes={["justify:center", "items:center", "w:[70%]", "rounded:lg", "my:2", "shadow:xl"]}>
+        <StyledOpacity onPress={() => setJob(job)} classes={["justify:center", "items:center", "w:[70%]", "rounded:lg", "my:2", "shadow:xl"]}>
             <StyledView classes={["w:full", "bg:secondary2", "rounded-t:lg"]}>
                 <StyledText classes={["text:xl", "color:background", "p:2"]}>{title}</StyledText>
             </StyledView>
@@ -65,6 +65,6 @@ export default JobCard = ({ job, crew, trucks}) => {
                     );
                 })) : <StyledText>No Truck</StyledText>}
             </StyledView>
-        </StyledOpacity>
+        </StyledOpacity >
     )
 }

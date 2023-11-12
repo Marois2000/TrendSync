@@ -5,6 +5,7 @@ const { styles, useStyles, makeStyledComponent } = createStyleBuilder({
     extendTheme: {
       colors: {
         primary: '#1B3F9C',
+        primary2: '#0D2A75',
         secondary1: '#f59a4e',
         secondary2: '#F4872C',
         secondary3: '#b55607',
