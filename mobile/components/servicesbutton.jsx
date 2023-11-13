@@ -11,7 +11,7 @@ export default ServicesButton = ({ openServices }) => {
                 <MaterialIcons name="home-repair-service" size={24} color="#F5F5F5" />
                 <StyledText classes={["color:background", "mx:2"]}>Services</StyledText>
             </StyledView>
-            <StyledOpacity>
+            <StyledOpacity onPress={openServices}>
                 <StyledText classes={["color:background"]}>View</StyledText>
             </StyledOpacity>
         </StyledView>

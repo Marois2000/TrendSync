@@ -14,12 +14,15 @@ import Jobspecs from '../components/jobspecs';
 import Materialsbutton from '../components/materialsbutton';
 import Servicesbutton from '../components/servicesbutton';
 import MaterialEdit from './materialedit';
+import ServiceEdit from './serviceedit';
 
 
 export default JobDetails = ({ backToDash, job, customer, user }) => {
     const [landscape, setLandscape] = useState( Dimensions.get('window').width > Dimensions.get('window').height);
     const [extras, setExtras] = useState(false);
     const [openMaterials, setOpenMaterials] = useState(false);
+    const [openServices, setOpenServices] = useState(false);
+
     
     useEffect(() => {
         const subscription = Dimensions.addEventListener('change', (e) => {
@@ -54,8 +57,8 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
                         : 
                             <StyledView classes={["w:full", "justify:center", "items:center"]}>
                                 <Jobspecs rate={job.rate} estimate={job.estimate} crewNum={job.num_crew} truckNum={job.num_trucks}/>
-                                <Materialsbutton openMaterials={() => setOpenMaterials(true)} job={job.job_id}/>
-                                <Servicesbutton />
+                                <Materialsbutton openMaterials={() => setOpenMaterials(true)} />
+                                <Servicesbutton openServices={() => setOpenServices(true)} />
                                 <StyledOpacity onPress={() => setExtras(false)} classes={["border:1", "border-color:background", "w:[80%]", "m:2", "rounded:md"]}>
                                     <StyledText classes={["color:background", "text-align:center", "text:xl"]}>See Less</StyledText>
                                 </StyledOpacity>
@@ -74,7 +77,7 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
                         <StyledView classes={["w:full", "justify:center", "items:center"]}>
                             <Jobspecs rate={job.rate} estimate={job.estimate} crewNum={job.num_crew} truckNum={job.num_trucks}/>
                             <Materialsbutton openMaterials={() => setOpenMaterials(true)} />
-                            <Servicesbutton />
+                            <Servicesbutton openServices={() => setOpenServices(true)} />
                         </StyledView>
                     </StyledScroll>
                     
@@ -87,6 +90,8 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
             }
             
             {openMaterials ? <MaterialEdit close={() => setOpenMaterials(false)} job={job} user={user}/> : null}
+            {openServices ? <ServiceEdit close={() => setOpenServices(false)} job={job} user={user}/> : null}
+
 
 
         </StyledView>

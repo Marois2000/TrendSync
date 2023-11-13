@@ -22,3 +22,23 @@ VALUES
 ('Strap', 35.00),
 ('Rug Cover', 10.00),
 ('Carpet Shield per Foot', 0.75);
+
+-- Services
+INSERT INTO service (name, price)
+VALUES
+('Multi Night Storage', 150.00),
+('Trucking', 25.00),
+('Unload Labor', 15.00),
+('Mileage Surchage', 10.00),
+('Pack Labor', 15.00),
+('Disposal Fee', 1.00),
+('Overnight Storage', 150.00),
+('Bulk Item Storage', 55.00),
+('Custom Fee', 1.00),
+('Storage', 50.00),
+('Additional Labor', 75.00),
+('Short Term Storage', 30.00),
+('Weight Ticket', 20.00);
+
+
+

@@ -360,7 +360,64 @@ app.post('/trendsync/updatematerials', async(req, res) => {
     }
 });
 
+/**
+ * Get all the services a job is not using
+ */
+app.post('/trendsync/getservices', async(req, res) => {
+    try {
+        const { jobId } = req.body;
 
+        const query = await pool.query('SELECT s.* FROM service s LEFT JOIN job_service js ON s.service_id = js.service_id AND js.job_id = $1 WHERE js.job_id IS NULL;', 
+        [jobId]);
+
+        res.json(query.rows);
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Get all services a job is using
+ */
+app.post('/trendsync/getservicesinuse', async(req, res) => {
+    try {
+        const { jobId } = req.body;
+
+        const query = await pool.query('SELECT js.*, s.name, s.price FROM job_service js JOIN service s ON js.service_id = s.service_id WHERE js.job_id = $1;', 
+        [jobId]);
+
+
+        res.json(query.rows);
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Update all of a jobs services
+ */
+app.post('/trendsync/updateservices', async(req, res) => {
+    try {
+        const { jobId, services } = req.body;
+
+
+        await pool.query('DELETE FROM job_service WHERE job_id = $1;', [jobId]);
+
+        services.forEach(service => {
+            pool.query('INSERT INTO job_service (job_id, service_id, quantity) VALUES ($1, $2, $3);',
+            [service.job_id, service.service_id, service.quantity])
+        });
+
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
 
 
 app.listen(5000, () => {

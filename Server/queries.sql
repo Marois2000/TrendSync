@@ -61,3 +61,23 @@ WHERE job_id = $1;
 -- Insert new set of materials
 INSERT INTO job_material (job_id, material_id, quantity)
 VALUES ($1, $2, $3);
+
+--Get all services that a job isn't using
+SELECT s.*
+FROM service s
+LEFT JOIN job_service js ON s.service_id = js.service_id AND js.job_id = $1
+WHERE js.job_id IS NULL;
+
+--Get all services a job is using
+SELECT js.*, s.name, s.price
+FROM job_service js
+JOIN service s ON js.service_id = s.service_id
+WHERE js.job_id = $1;
+
+-- Delete existing services for the specified job
+DELETE FROM job_service
+WHERE job_id = $1;
+
+-- Insert new set of services
+INSERT INTO job_service (job_id, service_id, quantity)
+VALUES ($1, $2, $3);
