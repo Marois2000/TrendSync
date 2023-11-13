@@ -42,3 +42,22 @@ SELECT *
 FROM truck
 WHERE NOT truck_id = ANY ($1);
 
+--Get all materials that a job isn't using
+SELECT m.*
+FROM material m
+LEFT JOIN job_material jm ON m.material_id = jm.material_id AND jm.job_id = 22
+WHERE jm.job_id IS NULL;
+
+--Get all materials a job is using
+SELECT jm.*, m.name, m.price
+FROM job_material jm
+JOIN material m ON jm.material_id = m.material_id
+WHERE jm.job_id = $1;
+
+-- Delete existing materials for the specified job
+DELETE FROM job_material
+WHERE job_id = $1;
+
+-- Insert new set of materials
+INSERT INTO job_material (job_id, material_id, quantity)
+VALUES ($1, $2, $3);

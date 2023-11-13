@@ -48,18 +48,18 @@ export default JobCard = ({ job, crew, trucks, setJob}) => {
                 <StyledText classes={["w:[60%]", "text:sm", "my:3", "pl:1"]}>{job.dropoff}</StyledText>
             </StyledView>
             <StyledView classes={["bg:grey1", "w:full", "flex:wrap", "flex:row", "p:1", "pb:4"]} style={{gap: 5}}>
-                {Array.isArray(crew) ? (crew.map((crewMember) => {
+                {Array.isArray(crew) ? (crew.map((crewMember, index) => {
                     return(
-                        <StyledView classes={["rounded:xl", "bg:grey2", "p:1"]}>
+                        <StyledView classes={["rounded:xl", "bg:grey2", "p:1"]} key={index}>
                             <StyledText classes={["text:xs"]}>{crewMember.first_name + " " + crewMember.last_name}</StyledText>
                         </StyledView>
                     );
                 })) : <StyledText>No Crew</StyledText>}
             </StyledView>
             <StyledView classes={["bg:grey1", "w:full", "flex:wrap", "flex:row", "p:1"]} style={{gap: 5}}>
-                {Array.isArray(trucks) ? (trucks.map((truck) => {
+                {Array.isArray(trucks) ? (trucks.map((truck, index) => {
                     return(
-                        <StyledView classes={["rounded:xl", "bg:grey2", "p:1"]}>
+                        <StyledView classes={["rounded:xl", "bg:grey2", "p:1"]} key={index}>
                             <StyledText classes={["text:xs"]}>{truck.name}</StyledText>
                         </StyledView>
                     );

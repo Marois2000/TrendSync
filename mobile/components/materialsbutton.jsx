@@ -11,7 +11,7 @@ export default MaterialsButton = ({ openMaterials }) => {
                 <Feather name="package" size={24} color="#F5F5F5" />
                 <StyledText classes={["color:background", "mx:2"]}>Materials</StyledText>
             </StyledView>
-            <StyledOpacity>
+            <StyledOpacity onPress={openMaterials}>
                 <StyledText classes={["color:background"]}>View</StyledText>
             </StyledOpacity>
         </StyledView>

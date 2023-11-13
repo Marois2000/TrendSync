@@ -183,9 +183,9 @@ export default Home = ({ user }) => {
                         </StyledView>
 
                         <StyledScroll classes={["flex:1", "bg:background", "w:full"]} contentContainerStyle={{alignItems:'center'}}>
-                            {Array.isArray(jobs) && jobs.length > 0 ? (jobs.map((job) => {
+                            {Array.isArray(jobs) && jobs.length > 0 ? (jobs.map((job, index) => {
                                 return(
-                                    <Jobcard job={job} crew={crew} trucks={trucks} setJob={goToJobDetails}/>
+                                    <Jobcard job={job} crew={crew} trucks={trucks} setJob={goToJobDetails} key={index}/>
                                 );
                             }))
                             : <StyledText classes={["m:5", "text:4xl"]}>No Jobs Today</StyledText>}

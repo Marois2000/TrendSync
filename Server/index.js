@@ -302,7 +302,63 @@ app.post('/trendsync/getusersjob', async(req, res) => {
     }
 });
 
+/**
+ * Get all the materials a job is not using
+ */
+app.post('/trendsync/getmaterials', async(req, res) => {
+    try {
+        const { jobId } = req.body;
 
+        const query = await pool.query('SELECT m.* FROM material m LEFT JOIN job_material jm ON m.material_id = jm.material_id AND jm.job_id=$1 WHERE jm.job_id IS NULL;', 
+        [jobId]);
+
+        res.json(query.rows);
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Get all materials a job is using
+ */
+app.post('/trendsync/getmaterialsinuse', async(req, res) => {
+    try {
+        const { jobId } = req.body;
+
+        const query = await pool.query('SELECT jm.*, m.name, m.price FROM job_material jm JOIN material m ON jm.material_id = m.material_id WHERE jm.job_id = $1;', 
+        [jobId]);
+
+        console.log(query.rows);
+
+        res.json(query.rows);
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Update all of a jobs materials
+ */
+app.post('/trendsync/updatematerials', async(req, res) => {
+    try {
+        const { jobId, materials } = req.body;
+
+        await pool.query('DELETE FROM job_material WHERE job_id=$1;', [jobId]);
+
+        materials.forEach(material => {
+            pool.query('INSERT INTO job_material (job_id, material_id, quantity) VALUES ($1, $2, $3);',
+            [material.job_id, material.material_id, material.quantity])
+        });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
 
 
 

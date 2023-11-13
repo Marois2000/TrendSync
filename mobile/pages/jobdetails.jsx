@@ -13,10 +13,13 @@ import Notes from '../components/notes';
 import Jobspecs from '../components/jobspecs';
 import Materialsbutton from '../components/materialsbutton';
 import Servicesbutton from '../components/servicesbutton';
+import MaterialEdit from './materialedit';
+
 
 export default JobDetails = ({ backToDash, job, customer }) => {
     const [landscape, setLandscape] = useState( Dimensions.get('window').width > Dimensions.get('window').height);
     const [extras, setExtras] = useState(false);
+    const [openMaterials, setOpenMaterials] = useState(false);
     
     useEffect(() => {
         const subscription = Dimensions.addEventListener('change', (e) => {
@@ -28,13 +31,13 @@ export default JobDetails = ({ backToDash, job, customer }) => {
             }
         })
         
-
         return () => subscription?.remove();
     });
 
+
     return(
         <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background", "w:full"]}>
-            <StyledView classes={["justify:start", "items:end", "bg:background", "w:full", "flex:row", "pb:2", "mt:3"]}>
+            <StyledView classes={["justify:start", "items:end", "bg:background", "w:full", "flex:row", "pb:2", "mt:10"]}>
                 <StyledOpacity onPress={backToDash}><StyledText classes={["color:primary", "text:2xl", "mx:2"]}>{"< Back"}</StyledText></StyledOpacity>
             </StyledView>
 
@@ -51,7 +54,7 @@ export default JobDetails = ({ backToDash, job, customer }) => {
                         : 
                             <StyledView classes={["w:full", "justify:center", "items:center"]}>
                                 <Jobspecs rate={job.rate} estimate={job.estimate} crewNum={job.num_crew} truckNum={job.num_trucks}/>
-                                <Materialsbutton />
+                                <Materialsbutton openMaterials={() => setOpenMaterials(true)} job={job.job_id}/>
                                 <Servicesbutton />
                                 <StyledOpacity onPress={() => setExtras(false)} classes={["border:1", "border-color:background", "w:[80%]", "m:2", "rounded:md"]}>
                                     <StyledText classes={["color:background", "text-align:center", "text:xl"]}>See Less</StyledText>
@@ -70,20 +73,20 @@ export default JobDetails = ({ backToDash, job, customer }) => {
                         
                         <StyledView classes={["w:full", "justify:center", "items:center"]}>
                             <Jobspecs rate={job.rate} estimate={job.estimate} crewNum={job.num_crew} truckNum={job.num_trucks}/>
-                            <Materialsbutton />
+                            <Materialsbutton openMaterials={() => setOpenMaterials(true)} />
                             <Servicesbutton />
                         </StyledView>
                     </StyledScroll>
                     
 
                     <StyledScroll classes={["flex:1", "bg:background", "h:full"]} contentContainerStyle={{alignItems:'center'}}>
-                        <Addresses pickup={job.pickup} dropoff={job.dropoff}/>
+                        <Addresses pickup={job.pickup} dropoff={job.dropoff} />
                         <Notes notes={job.notes}/>
                     </StyledScroll>
                 </StyledView>
             }
             
-            
+            {openMaterials ? <MaterialEdit close={() => setOpenMaterials(false)} job={job}/> : null}
 
 
         </StyledView>

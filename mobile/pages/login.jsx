@@ -1,11 +1,12 @@
 /**
  * @author Tyler Marois
  */
-import { StyledView, StyledText } from '../StyleWrappers';
+import { StyledView, StyledText, StyledKAV } from '../StyleWrappers';
 import Inputfield from '../components/inputfield';
 import Button from '../components/button';
 import { useState } from 'react';
 import path from "../path";
+import { KeyboardAvoidingView } from 'react-native';
 
 export default LogIn = ({ setUser }) => {
     const [email, setEmail] = useState("");
@@ -35,8 +36,9 @@ export default LogIn = ({ setUser }) => {
         }
     }
 
+
     return (
-        <StyledView classes={["flex:1", "justify:center", "items:center", "bg:background"]} >
+        <KeyboardAvoidingView style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#F5F5F5"}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
             
             <StyledText classes={["text:6xl", "color:primary", "mb:12"]}>Trendsync</StyledText>
             <StyledView classes={["w:full", "justify:center", "items:center"]}> 
@@ -55,6 +57,6 @@ export default LogIn = ({ setUser }) => {
 
             <Button text="Log In" update={login}/>
 
-        </StyledView>
+        </KeyboardAvoidingView>
     )
 }
