@@ -141,7 +141,7 @@ export default Home = ({ user }) => {
 
     return (
         <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background"]}>
-            {showJob ?   <Jobdetails job={job} customer={customer} backToDash={comeBackToDash}/> :
+            {showJob ?   <Jobdetails job={job} customer={customer} backToDash={comeBackToDash} user={user}/> :
 
 
                     <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background", "w:full"]}>

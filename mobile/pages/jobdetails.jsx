@@ -16,7 +16,7 @@ import Servicesbutton from '../components/servicesbutton';
 import MaterialEdit from './materialedit';
 
 
-export default JobDetails = ({ backToDash, job, customer }) => {
+export default JobDetails = ({ backToDash, job, customer, user }) => {
     const [landscape, setLandscape] = useState( Dimensions.get('window').width > Dimensions.get('window').height);
     const [extras, setExtras] = useState(false);
     const [openMaterials, setOpenMaterials] = useState(false);
@@ -86,7 +86,7 @@ export default JobDetails = ({ backToDash, job, customer }) => {
                 </StyledView>
             }
             
-            {openMaterials ? <MaterialEdit close={() => setOpenMaterials(false)} job={job}/> : null}
+            {openMaterials ? <MaterialEdit close={() => setOpenMaterials(false)} job={job} user={user}/> : null}
 
 
         </StyledView>

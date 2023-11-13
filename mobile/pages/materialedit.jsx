@@ -6,11 +6,13 @@ import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons'
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
+import Toast from 'react-native-root-toast';
 
-export default MaterialEdit = ({ close, job }) => {
+export default MaterialEdit = ({ close, job, user }) => {
     const [unusedMaterials, setUnusedMaterials] = useState([]);
     const [usedMaterials, setUsedMaterials] = useState([]);
     const [total, setTotal] = useState(0.00);
+
 
     useEffect(() => {
         calculateTotal();
@@ -73,7 +75,6 @@ export default MaterialEdit = ({ close, job }) => {
             });
             const res = await req.json();
             
-            console.log(res)
             setUsedMaterials(res);
         } catch (error) {
             console.log(error.message);
@@ -138,6 +139,7 @@ export default MaterialEdit = ({ close, job }) => {
     }
 
     const updateMaterials = async() => {
+
         let materials = [];
         usedMaterials.forEach(material => {
             materials = [...materials, {
@@ -151,8 +153,16 @@ export default MaterialEdit = ({ close, job }) => {
             jobId: job.job_id,
             materials: materials
         }
+        
 
         try {
+            Toast.show('Materials Saved!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.TOP,
+                backgroundColor: '#4BB543',
+                opacity: 90,
+            });
+            
             const req = await fetch(path+"/trendsync/updatematerials", {
                 method: 'POST',
                 headers: {
@@ -161,7 +171,7 @@ export default MaterialEdit = ({ close, job }) => {
                 },
                 body: JSON.stringify(body)
             });
-            const res = await req.json();
+            
             
             getMaterials();
             getMaterialsUsed();
@@ -183,8 +193,13 @@ export default MaterialEdit = ({ close, job }) => {
                         return(
                             <StyledView classes={["w:[80%]", "m:2", "p:2", "bg:primary2", "flex:row", "justify:between"]} key={index}>
                                 <StyledText classes={["text:lg", "color:background", "text-align:left"]} >{material.name}</StyledText>
-                                <Entypo name="plus" size={24} color="#F5F5F5" onPress={() => addMaterialToUsed(material)} />
+                                
+                                {user.rank > 0 ? 
+                                    <Entypo name="plus" size={24} color="#F5F5F5" onPress={() => addMaterialToUsed(material)} />
+                                : null }
                             </StyledView>
+
+                            
                         )
                     })}
                 </StyledScroll>
@@ -196,12 +211,18 @@ export default MaterialEdit = ({ close, job }) => {
                             return(
                                 <StyledView classes={["w:[80%]", "m:2", "p:2", "bg:grey1", "flex:row", "justify:between", "items:center"]} key={index}>
                                     <StyledText classes={["text:lg", "color:primary", "text-align:left", "w:[40%]"]} key={index}>{material.name}</StyledText>
-                                    <StyledView classes={["flex:row", "flex:1", "justify:center", "items:center"]}>
-                                        <MaterialCommunityIcons name='chevron-left' size={24} color="#1B3F9C" onPress={() => setMaterialQuantity(1, index, true, -1)}/>
-                                        <StyledTextInput value={`${material.quantity}`} onChangeText={(e) => setMaterialQuantity(e, index, false, 0)} keyboardType='numeric'  classes={["bg:grey2", "rounded:md", "p:1", "mx:3"]}/>
-                                        <MaterialCommunityIcons name='chevron-right' size={24} color="#1B3F9C" onPress={() => setMaterialQuantity(1, index, true, 1)}/>
-                                    </StyledView>
-                                    <FontAwesome name="close" size={24} color="#1B3F9C" onPress={() => removeFromUsedMaterials(material)} />
+
+                                    {user.rank > 0 ? 
+                                        <StyledView classes={["flex:row", "flex:1", "justify:center", "items:center"]}>
+                                            <MaterialCommunityIcons name='chevron-left' size={24} color="#1B3F9C" onPress={() => setMaterialQuantity(1, index, true, -1)}/>
+                                            <StyledTextInput value={`${material.quantity}`} onChangeText={(e) => setMaterialQuantity(e, index, false, 0)} keyboardType='numeric'  classes={["bg:grey2", "rounded:md", "p:1", "mx:3"]}/>
+                                            <MaterialCommunityIcons name='chevron-right' size={24} color="#1B3F9C" onPress={() => setMaterialQuantity(1, index, true, 1)}/>
+                                        </StyledView>
+                                    : <StyledText classes={["bg:grey2", "rounded:md", "p:1", "mx:3"]}>{`${material.quantity}`}</StyledText> }
+
+                                    {user.rank > 0 ? 
+                                        <FontAwesome name="close" size={24} color="#1B3F9C" onPress={() => removeFromUsedMaterials(material)} />
+                                    : null }
                                 </StyledView>
                             )
                         })}
@@ -212,9 +233,13 @@ export default MaterialEdit = ({ close, job }) => {
                             <StyledText classes={["color:background", "text:lg", "text-align:left"]}>Total</StyledText>
                             <StyledText classes={["color:background", "text:lg", "text-align:right"]}>{total}</StyledText>
                         </StyledView>
-                        <StyledOpacity classes={["border:1", "px:5", "py:2", "border-color:background", "rounded:lg"]} onPress={updateMaterials}>
-                            <StyledText classes={["color:background", "text:xl"]}>Save Changes</StyledText>
-                        </StyledOpacity>
+                        
+                        {user.rank > 0 ? 
+                            <StyledOpacity classes={["border:1", "px:5", "py:2", "border-color:background", "rounded:lg"]} onPress={updateMaterials}>
+                                <StyledText classes={["color:background", "text:xl"]}>Save Changes</StyledText>
+                            </StyledOpacity>
+                        : null }
+
                     </StyledView>
                 </StyledView>
                 

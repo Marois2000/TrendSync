@@ -330,7 +330,6 @@ app.post('/trendsync/getmaterialsinuse', async(req, res) => {
         const query = await pool.query('SELECT jm.*, m.name, m.price FROM job_material jm JOIN material m ON jm.material_id = m.material_id WHERE jm.job_id = $1;', 
         [jobId]);
 
-        console.log(query.rows);
 
         res.json(query.rows);
 
@@ -353,6 +352,7 @@ app.post('/trendsync/updatematerials', async(req, res) => {
             pool.query('INSERT INTO job_material (job_id, material_id, quantity) VALUES ($1, $2, $3);',
             [material.job_id, material.material_id, material.quantity])
         });
+
 
     } catch (error) {
         console.log(error.message);
