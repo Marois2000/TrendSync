@@ -6,7 +6,7 @@ import { JobAsset } from "./jobasset";
 import { path } from "../path";
 import { useDrop } from "react-dnd";
 
-export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule }) => {
+export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule, setFullCrew }) => {
 
     useEffect(() => {
         getCrewMembers();
@@ -27,7 +27,8 @@ export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule }) =
             });
             const res = await req.json();
 
-            setCrew(res);
+            setCrew(res.notScheduled);
+            setFullCrew(res.everyone);
         } catch (error) {
             console.log(error);
         }
@@ -75,7 +76,7 @@ export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule }) =
                     <div className="spinner animate-ping">Loading...</div>
                 ) : (
                     crews.map((crew, index) => (
-                    <JobAsset key={index} name={crew.last_name + ", " + crew.first_name} type={'crew'} crew={crew}/>
+                        <JobAsset key={index} name={crew.last_name + ", " + crew.first_name} type={'crew'} crew={crew} comingFromSlot={false}/>
                     ))
                 )}
             </div>

@@ -20,6 +20,11 @@ export const JobBoard = () => {
     const [jobs, setJobs] = useState([]);
     const [schedule, setSchedule] = useState([]);
 
+    const [fullCrew, setFullCrew] = useState([]);
+    const [fullTrucks, setFullTrucks] = useState([]);
+    const [fullJobs, setFullJobs] = useState([]);
+
+
     useEffect(() => {
         filterCrew();
         filterTrucks();
@@ -28,6 +33,7 @@ export const JobBoard = () => {
     }, [schedule]);
     
     const filterCrew = () => {
+        const everyone = fullCrew;
         let usersOnSchedule = [];
         schedule.forEach((timeslot) => {
             const crew = timeslot.crew;
@@ -38,14 +44,16 @@ export const JobBoard = () => {
             });
         });
 
-        let usersNotOnSchedule = crews.filter(crewMember => {
+        let usersNotOnSchedule = everyone.filter(crewMember => {
             return !usersOnSchedule.some(user => user.user_id === crewMember.user_id);
         });
+
 
         setCrew(usersNotOnSchedule);
     }
 
     const filterTrucks = () => {
+        const allTrucks = fullTrucks
         let trucksOnSchedule = [];
         schedule.forEach((timeslot) => {
             const trucks = timeslot.trucks;
@@ -56,7 +64,7 @@ export const JobBoard = () => {
             });
         });
 
-        let trucksNotOnSchedule = trucks.filter(truck => {
+        let trucksNotOnSchedule = allTrucks.filter(truck => {
             return !trucksOnSchedule.some(truckOnSchedule => truckOnSchedule.truck_id === truck.truck_id);
         });
 
@@ -64,6 +72,7 @@ export const JobBoard = () => {
     }
 
     const filterJobs = () => {
+        const allJobs = fullJobs;
         let jobsOnSchedule = [];
         schedule.forEach((timeslot) => {
             const jobs = timeslot.jobid;
@@ -74,7 +83,7 @@ export const JobBoard = () => {
             });
         });
 
-        let jobsNotOnSchedule = jobs.filter(job => {
+        let jobsNotOnSchedule = allJobs.filter(job => {
             return !jobsOnSchedule.some(jobOnSchedule => jobOnSchedule.job_id === job.job_id);
         });
 
@@ -85,15 +94,15 @@ export const JobBoard = () => {
     return (
         <div className="flex w-full">
             <div className="flex flex-col ml-3 gap-5 mt-5">
-                <CrewContainer crews={crews} setCrew={setCrew} date={date} schedule={schedule} setSchedule={setSchedule} />
-                <TruckContainer trucks={trucks} setTrucks={setTrucks} date={date} schedule={schedule} setSchedule={setSchedule}/>
+                <CrewContainer crews={crews} setCrew={setCrew} date={date} schedule={schedule} setSchedule={setSchedule} setFullCrew={setFullCrew} />
+                <TruckContainer trucks={trucks} setTrucks={setTrucks} date={date} schedule={schedule} setSchedule={setSchedule} setFullTrucks={setFullTrucks}/>
             </div>
             <div className="w-full">
                 <div>
-                    <Schedule date={date} setDate={setDate} schedule={schedule} setSchedule={setSchedule}/>
+                    <Schedule date={date} setDate={setDate} schedule={schedule} setSchedule={setSchedule} allAssets={[fullCrew, fullTrucks, filterJobs]} setCrew={setCrew} setJobs={setJobs} setTrucks={setTrucks} />
                 </div>
                 <div>
-                    <JobContainer jobs={jobs} setJobs={setJobs} date={date} schedule={schedule} setSchedule={setSchedule} />
+                    <JobContainer jobs={jobs} setJobs={setJobs} date={date} schedule={schedule} setSchedule={setSchedule} setFullJobs={setFullJobs} />
                 </div>
             </div>
             

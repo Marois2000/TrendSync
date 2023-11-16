@@ -7,6 +7,8 @@ import { MyButton } from "./mybutton";
 import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * @description A popup window to add a customer to the database
@@ -86,8 +88,9 @@ export const AddCustomerModal = ({ isOpen, onClose, setCustomer, updateCustomers
     return (
         <div className={modalcss}>
             <div className="flex flex-col justify-center items-center w-[100vh] h-[80vh] z-50">
-                <div className="bg-primary w-full rounded-t-3xl">
+                <div className="bg-primary w-full rounded-t-3xl flex justify-between">
                     <h1 className="text-white text-3xl p-2">Add Customer</h1>
+                    <button className="text-white p-3 text-3xl" onClick={() => onClose(false)}><FontAwesomeIcon icon={faTimes} /></button>
                 </div>
                 <div className="flex flex-col justify-center items-center bg-background w-full">
                     <div className="flex justify-center items-stretch m-5 gap-10 w-[80%]">

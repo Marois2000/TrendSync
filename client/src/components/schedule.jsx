@@ -8,15 +8,12 @@ import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const Schedule = ({ date, setDate, schedule, setSchedule}) => {
+export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJobs, setTrucks, allAssets}) => {
 
     useEffect(() => {
         setSchedule([])
         getSchedule();
     }, [date]);
-
-    useEffect(() => {
-    }, [schedule]);
 
     const getSchedule = async() => {
         const body = {
@@ -100,6 +97,8 @@ export const Schedule = ({ date, setDate, schedule, setSchedule}) => {
         }
     }
 
+    
+
     return (
         <div className="flex flex-col justify-center items-center mx-5">
             <div className="flex justify-end items-center w-full">
@@ -119,7 +118,7 @@ export const Schedule = ({ date, setDate, schedule, setSchedule}) => {
             <div className="flex flex-col rounded-b-lg h-[50vh] bg-grey-100 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 items-center w-full border-grey-100 border-4">
                 {schedule.map((timeslot, index) => {
                     return (
-                        <TimeSlot index={index} crew={timeslot.crew} trucks={timeslot.trucks} jobs={timeslot.jobid} schedule={schedule} setSchedule={setSchedule} />
+                        <TimeSlot index={index} crew={timeslot.crew} trucks={timeslot.trucks} jobs={timeslot.jobid} schedule={schedule} setSchedule={setSchedule} setCrew={setCrew} setJobs={setJobs} setTrucks={setTrucks} allAssets={allAssets} />
                     )
                 })}
             </div>

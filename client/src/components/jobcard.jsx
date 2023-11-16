@@ -6,7 +6,7 @@ import { path } from "../path";
 import { useDrag } from "react-dnd";
 
 
-export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, index}) => {
+export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, index, comingFromSlot}) => {
     const [title, setTitle] = useState("");
 
     useEffect(() => {
@@ -17,7 +17,6 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, 
         const body = {
             id: customerId
         }
-        console.log(body)
         try {
             const req = await fetch(path+"/trendsync/getcustomer", {
                 method: 'POST',
@@ -38,14 +37,14 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, 
 
     const[{ isDragging }, dragRef] = useDrag({
         type: 'asset',
-        item: {crew, trucks, pickup, dropoff, customerId, type, job, index},
+        item: {crew, trucks, pickup, dropoff, customerId, type, job, index, comingFromSlot},
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })
     });
 
     return (
-        <div className="flex flex-col justify-center items-center m-1" ref={dragRef}>
+        <div className="flex flex-col justify-center items-center m-1 cursor-grab" ref={dragRef}>
             <div className="bg-grey-200 w-[12vw] rounded-t-lg">
                 <h1 className="text-white text-lg m-1">{title}</h1>
             </div>

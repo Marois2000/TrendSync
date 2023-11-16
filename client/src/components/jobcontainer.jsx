@@ -7,7 +7,7 @@ import { path } from "../path";
 import { useDrop } from "react-dnd";
 
 
-export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule}) => {
+export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFullJobs }) => {
 
     useEffect(() => {
         getJobs();
@@ -29,7 +29,8 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule}) => {
             });
             const res = await req.json();
 
-            setJobs(res);
+            setJobs(res.jobsScheduled);
+            setFullJobs(res.allJobs);
         } catch (error) {
             console.log(error); 
         }
@@ -72,7 +73,7 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule}) => {
                 <div className="w-full flex rounded-e-lg h-[20vh] bg-grey-100 overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 ">
                     {jobs.map((job) => {
                         return(
-                            <JobCard crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type={'job'} job={job} />
+                            <JobCard crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type={'job'} job={job} comingFromSlot={false} />
                             
                         )
                     })}

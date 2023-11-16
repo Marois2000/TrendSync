@@ -6,7 +6,7 @@ import { JobAsset } from "./jobasset";
 import { path } from "../path";
 import { useDrop } from "react-dnd";
 
-export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule}) => {
+export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule, setFullTrucks}) => {
 
     useEffect(() => {
         getTrucks();
@@ -28,7 +28,8 @@ export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule}
             });
             const res = await req.json();
 
-            setTrucks(res);
+            setTrucks(res.notScheduled);
+            setFullTrucks(res.allTrucks);
         } catch (error) {
             console.log(error);
         }
@@ -73,7 +74,7 @@ export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule}
                     <div className="spinner animate-ping">Loading...</div>
                 ) : (
                     trucks.map((truck, index) => (
-                        <JobAsset key={index} name={truck.name} type={'truck'} truck={truck} />
+                        <JobAsset key={index} name={truck.name} type={'truck'} truck={truck} comingFromSlot={false} />
                     ))
                 )}
             </div>

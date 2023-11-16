@@ -174,8 +174,15 @@ app.post('/trendsync/getcrew', async(req, res) => {
         
         const crewQuery = await pool.query('SELECT * FROM users WHERE NOT user_id = ANY ($1);', 
         [crewOnJob]);
+
+        const allCrew = await pool.query('SELECT * FROM users;');
+
+        const crew = {
+            notScheduled: crewQuery.rows,
+            everyone: allCrew.rows
+        }
         
-        res.json(crewQuery.rows);
+        res.json(crew);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({error: error.message});
@@ -203,8 +210,15 @@ app.post('/trendsync/gettrucks', async(req, res) => {
         }
         const trucksQuery = await pool.query('SELECT * FROM truck WHERE NOT truck_id = ANY ($1);', 
         [trucksOnJob]);
+
+        const allTrucks = await pool.query('SELECT * FROM truck;');
+
+        const trucks = {
+            notScheduled: trucksQuery.rows,
+            allTrucks: allTrucks.rows
+        }
         
-        res.json(trucksQuery.rows);
+        res.json(trucks);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({error: error.message});
@@ -233,8 +247,15 @@ app.post('/trendsync/getjobs', async(req, res) => {
         const jobsQuery = await pool.query('SELECT * FROM job WHERE NOT job_id = ANY ($1) AND job_date=$2;', 
         [jobsOnSchedule, date]);
 
+        const allJobs = await pool.query('SELECT * FROM job WHERE job_date=$1;', 
+        [date]);
+
+        const jobs = {
+            jobsScheduled: jobsQuery.rows,
+            allJobs: allJobs.rows
+        }
         
-        res.json(jobsQuery.rows);
+        res.json(jobs);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({error: error.message});
