@@ -25,6 +25,7 @@ export const Login = ( {loginSetter, userSetter} ) => {
     useEffect(() => {
         if(cookies.user) {
             if(cookies.user.rank == 2) {
+                userSetter(cookies.user);
                 loginSetter(true);
             }
         }
