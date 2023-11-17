@@ -1,12 +1,14 @@
 /**
  * @author Tyler Marois
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InputField } from "../components/inputfield";
 import { MyButton } from "../components/mybutton";
 import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CookiesProvider, useCookies } from "react-cookie";
+
 
 /**
  * @description The login page of the admin website
@@ -18,6 +20,16 @@ import 'react-toastify/dist/ReactToastify.css';
 export const Login = ( {loginSetter, userSetter} ) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [cookies, setCookie] = useCookies(['user']);
+
+    useEffect(() => {
+        if(cookies.user) {
+            if(cookies.user.rank == 2) {
+                loginSetter(true);
+            }
+        }
+        
+    }, [cookies]);
 
     /**
      * @description Checks if the user info is valid and updates state accordingly
@@ -25,6 +37,9 @@ export const Login = ( {loginSetter, userSetter} ) => {
      * @param {*} e The event triggered by button click
      */
     const checkValidLogin = async e => {
+        console.log(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString());
+
+
         e.preventDefault();
         const body = {
             email: email,
@@ -43,6 +58,10 @@ export const Login = ( {loginSetter, userSetter} ) => {
 
             if(data[0]) {
                 if(data[0].rank == 2) {
+                    setCookie("user", data[0], { 
+                        path: "/",
+                        expires: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+                    });
                     userSetter(data[0]);
                     loginSetter(true);
                 } else {
@@ -76,27 +95,29 @@ export const Login = ( {loginSetter, userSetter} ) => {
     }
 
     return (
-        <div className="flex justify-center items-center h-full">
-            <div className="flex-col">
-                <h1 className="text-8xl text-center text-primary font-bold tracking-widest mb-20">Trendsync</h1>
-                <InputField title="Email" value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)}/>
-                <InputField title="Password" value={password} placeholder={"Password"} onChange={(e) => setPassword(e.target.value)} hidden={true}/>
-                <div className="mt-7">
-                    <MyButton text="Sign In" update={checkValidLogin}/>
+        <CookiesProvider>
+            <div className="flex justify-center items-center h-full">
+                <div className="flex-col">
+                    <h1 className="text-8xl text-center text-primary font-bold tracking-widest mb-20">Trendsync</h1>
+                    <InputField title="Email" value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)}/>
+                    <InputField title="Password" value={password} placeholder={"Password"} onChange={(e) => setPassword(e.target.value)} hidden={true}/>
+                    <div className="mt-7">
+                        <MyButton text="Sign In" update={checkValidLogin}/>
+                    </div>
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={2000}
+                        hideProgressBar={true}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    />
                 </div>
-                <ToastContainer
-                    position="top-center"
-                    autoClose={2000}
-                    hideProgressBar={true}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
             </div>
-        </div>
+        </CookiesProvider>
     )
 }

@@ -9,7 +9,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
   const [login, setLogin] = useState(false);
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
+  
 
   return (
       <DndProvider backend={HTML5Backend}>
