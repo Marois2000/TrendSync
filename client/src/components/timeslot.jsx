@@ -73,17 +73,7 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule, set
     }
 
     const removeSlot = () => {
-
         setSchedule(schedule.filter((slot) => slot != schedule[index]));
-
-
-        // console.log(crews);
-        // console.log(allTrucks);
-        // console.log(allJobs);
-
-        //setCrew(...allAssets[0], ...crew);
-        
-        console.log(schedule);
     }
 
     return (
@@ -113,7 +103,7 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule, set
                     })}
                 </div>
             </div>
-            <div className="w-full max-w-[47vw] flex h-[25vh] bg-grey-100 overflow-hidden overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 px-2">
+            <div className="w-full flex h-[25vh] bg-grey-100 overflow-hidden overflow-x-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 px-2">
                     {jobs.map((job) => {
                         return (
                             <JobCard index={index} crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type="job" job={job} comingFromSlot={true}/>

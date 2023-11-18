@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const AddTruck = () => {
     const [name, setName] = useState(""); // The name of the truck
     const [model, setModel] = useState(""); // The model of the truck
+    const [length, setLength] = useState(0) // The Length of the truck
 
     /**
      * @description Adds a truck into the database
@@ -26,7 +27,8 @@ export const AddTruck = () => {
         e.preventDefault();
         const body = {
             name: name,
-            model: model
+            model: model,
+            length: length
         }
         try {
            const req = await fetch(path+"/trendsync/addtruck", {
@@ -60,6 +62,12 @@ export const AddTruck = () => {
                 <InputField title="Truck Name" placeholder="Ex. NH x" value={name} onChange={(e) => setName(e.target.value)}/>
                 <InputField title="Model" placeholder="Ex. Enterprise" value={model} onChange={(e) => setModel(e.target.value)}/>
             </div>
+            <div className="flex w-[70%] gap-20">
+                <div>
+                    <InputField number={true} title="Length (ft.)" placeholder="Ex. Enterprise" value={length} onChange={(e) => setLength(e.target.value)}/>
+                </div>
+            </div>
+
             <div className="mt-10">
                 <MyButton text="Add Truck" update={addTruckToDatabase}/>
             </div>

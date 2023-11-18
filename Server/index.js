@@ -56,8 +56,8 @@ app.post('/trendsync/addcustomer', async(req, res) => {
  */
 app.post('/trendsync/addtruck', async(req, res) => {
     try {
-        const { name, model } = req.body;
-        const query = await pool.query('INSERT INTO truck (name, model)VALUES($1, $2) RETURNING *;', [name, model]);
+        const { name, model, length } = req.body;
+        const query = await pool.query('INSERT INTO truck (name, model, length)VALUES($1, $2, $3) RETURNING *;', [name, model, length]);
    
         res.json(query.rows);
     } catch (error) {
@@ -172,7 +172,7 @@ app.post('/trendsync/getcrew', async(req, res) => {
             });
         }
         
-        const crewQuery = await pool.query('SELECT * FROM users WHERE NOT user_id = ANY ($1);', 
+        const crewQuery = await pool.query('SELECT * FROM users WHERE NOT user_id = ANY ($1) AND active=true;', 
         [crewOnJob]);
 
         const allCrew = await pool.query('SELECT * FROM users;');
@@ -208,7 +208,7 @@ app.post('/trendsync/gettrucks', async(req, res) => {
                 });
             });
         }
-        const trucksQuery = await pool.query('SELECT * FROM truck WHERE NOT truck_id = ANY ($1);', 
+        const trucksQuery = await pool.query('SELECT * FROM truck WHERE NOT truck_id = ANY ($1) AND active=true;', 
         [trucksOnJob]);
 
         const allTrucks = await pool.query('SELECT * FROM truck;');
@@ -434,6 +434,41 @@ app.post('/trendsync/updateservices', async(req, res) => {
         });
 
 
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Update a user
+ */
+app.put('/trendsync/updateuser', async(req, res) => {
+    try {
+        const { first, last, email, password, rank, active, id } = req.body;
+
+        const query = await pool.query('UPDATE users SET first_name=$1, last_name=$2, email=$3, password=$4, rank=$5, active=$6 WHERE user_id=$7 RETURNING *;', 
+        [first, last, email, password, rank, active, id]);
+
+        res.json(query.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Update a truck
+ */
+app.put('/trendsync/updatetruck', async(req, res) => {
+    try {
+        const { name, model, length, active, id } = req.body;
+
+        const query = await pool.query('UPDATE truck SET name=$1, model=$2, length=$3, active=$4 WHERE truck_id=$5 RETURNING *;', 
+        [name, model, length, active, id]);
+
+        console.log(query.rows[0]);
+        res.json(query.rows[0]);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({error: error.message});

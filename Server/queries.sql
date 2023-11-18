@@ -81,3 +81,13 @@ WHERE job_id = $1;
 -- Insert new set of services
 INSERT INTO job_service (job_id, service_id, quantity)
 VALUES ($1, $2, $3);
+
+--Update a User
+UPDATE users
+SET first_name=$1, last_name=$2, email=$3, password=$4, rank=$5, active=$6
+WHERE user_id=$7;  
+
+--Update a Truck
+UPDATE truck
+SET name=$1, model=$2, length=$3, active=$4
+WHERE truck_id=$5;  

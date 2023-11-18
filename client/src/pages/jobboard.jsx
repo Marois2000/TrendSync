@@ -31,6 +31,7 @@ export const JobBoard = () => {
         filterJobs();
 
     }, [schedule]);
+
     
     const filterCrew = () => {
         const everyone = fullCrew;
@@ -94,8 +95,8 @@ export const JobBoard = () => {
     return (
         <div className="flex w-full">
             <div className="flex flex-col ml-3 gap-5 mt-5">
-                <CrewContainer crews={crews} setCrew={setCrew} date={date} schedule={schedule} setSchedule={setSchedule} setFullCrew={setFullCrew} />
-                <TruckContainer trucks={trucks} setTrucks={setTrucks} date={date} schedule={schedule} setSchedule={setSchedule} setFullTrucks={setFullTrucks}/>
+                <CrewContainer crews={crews} setCrew={setCrew} date={date} schedule={schedule} setSchedule={setSchedule} setFullCrew={setFullCrew} fullCrew={fullCrew} />
+                <TruckContainer trucks={trucks} setTrucks={setTrucks} date={date} schedule={schedule} setSchedule={setSchedule} setFullTrucks={setFullTrucks} fullTrucks={fullTrucks}/>
             </div>
             <div className="w-full">
                 <div>

@@ -18,6 +18,7 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFu
         const body = {
             date: date
         }
+
         try {
             const req = await fetch(path+"/trendsync/getjobs", {
                 method: 'POST',

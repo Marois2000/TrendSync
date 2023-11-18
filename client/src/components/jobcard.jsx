@@ -6,8 +6,9 @@ import { path } from "../path";
 import { useDrag } from "react-dnd";
 
 
-export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, index, comingFromSlot}) => {
+export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, index, comingFromSlot }) => {
     const [title, setTitle] = useState("");
+    const [details, setDetails] = useState(false);
 
     useEffect(() => {
         getTitle();
@@ -44,7 +45,7 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, 
     });
 
     return (
-        <div className="flex flex-col justify-center items-center m-1 cursor-grab" ref={dragRef}>
+        <div className="flex flex-col justify-center items-center m-1 cursor-grab w-[12vw] relative" ref={dragRef} onMouseEnter={() => setDetails(true)} onMouseLeave={() => setDetails(false)}>
             <div className="bg-grey-200 w-[12vw] rounded-t-lg">
                 <h1 className="text-white text-lg m-1">{title}</h1>
             </div>
@@ -66,6 +67,24 @@ export const JobCard = ({ crew, trucks, pickup, dropoff, customerId, type, job, 
                 <h2 className="text-xs w-[20ch] pb-1">{pickup}</h2>
                 <h2 className="text-xs w-[20ch]">{dropoff}</h2>
             </div>
+
+            {details ? 
+                <div className="absolute right-[-10rem] bg-grey-200 rounded-lg overflow-hidden border-black border-2 z-20">
+                    <h1 className="text-white text-sm text-center w-full bg-primary">Details</h1>
+                    <div className="flex justify-between items-center w-full gap-5">
+                        <h1 className="text-white text-xs">Rate:</h1>
+                        <h1 className="text-white text-xs">{job.rate}</h1>
+                    </div>
+                    <div className="flex justify-between items-center w-full gap-5">
+                        <h1 className="text-white text-xs">Estimate:</h1>
+                        <h1 className="text-white text-xs">{job.estimate}</h1>
+                    </div>
+                    <div className="flex justify-between items-center w-full gap-5">
+                        <h1 className="text-white text-xs">Complete:</h1>
+                        <h1 className="text-white text-xs">{job.complete ? "Complete" : "Incomplete"}</h1>
+                    </div>
+                </div>  
+            : null}
         </div>
     )
 }
