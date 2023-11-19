@@ -16,11 +16,11 @@ import { ViewCustomers } from "./viewcustomers";
  * @returns html of all the different pages and components
  */
 export const Home = ({ user }) => {
-    const [jobBoard, setJobBoard] = useState(false);
+    const [jobBoard, setJobBoard] = useState(true);
     const [addJob, setAddJob] = useState(false);
     const [addUser, setAddUser] = useState(false);
     const [addTruck, setAddTruck] = useState(false);
-    const [viewCustomers, setViewCustomers] = useState(true)
+    const [viewCustomers, setViewCustomers] = useState(false)
     const [pages, setPages] = useState([jobBoard, addJob, addUser, addTruck, viewCustomers]);
 
     /**
