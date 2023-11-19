@@ -91,7 +91,7 @@ export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule,
                                     <button onClick={() => openModal(truck)} className="bg-primary text-white border-blue-700 border-2 px-2 z-30">Edit</button>
                                 </div>
                             )
-                            }))
+                        }))
                     :
                         (trucks.map((truck, index) => (
                             <JobAsset key={index} name={truck.name} type={'truck'} truck={truck} comingFromSlot={false} showDetail={true} />

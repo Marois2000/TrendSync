@@ -24,6 +24,9 @@ app.post('/trendsync/login', async(req, res) => {
     }
 });
 
+/**
+ * Gets all customers
+ */
 app.post('/trendsync/customers', async(req, res) => {
     try {
         const query = await pool.query("SELECT * FROM customer;");
@@ -467,7 +470,57 @@ app.put('/trendsync/updatetruck', async(req, res) => {
         const query = await pool.query('UPDATE truck SET name=$1, model=$2, length=$3, active=$4 WHERE truck_id=$5 RETURNING *;', 
         [name, model, length, active, id]);
 
-        console.log(query.rows[0]);
+        res.json(query.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Update a job
+ */
+app.put('/trendsync/updatejob', async(req, res) => {
+    try {
+        const { pickup, dropoff, crew, trucks, date, notes, estimate, rate, id } = req.body;
+
+        const query = await pool.query('UPDATE job SET pickup=$1, dropoff=$2, num_crew=$3, num_trucks=$4, job_date=$5, notes=$6, estimate=$7, rate=$8 WHERE job_id=$9 RETURNING *;', 
+        [pickup, dropoff, crew, trucks, date, notes, estimate, rate, id]);
+
+        res.json(query.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Set a customers balance
+ */
+app.put('/trendsync/setbalance', async(req, res) => {
+    try {
+        const { balance, id } = req.body;
+
+        const query = await pool.query('UPDATE customer SET balance=$1 WHERE customer_id=$2 RETURNING *;', 
+        [balance, id]);
+
+        res.json(query.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Update a customer
+ */
+app.put('/trendsync/updatecustomer', async(req, res) => {
+    try {
+        const { first, last, email, phone, id } = req.body;
+
+        const query = await pool.query('UPDATE customer SET first_name=$1, last_name=$2, email=$3, phone=$4 WHERE customer_id=$5 RETURNING *;', 
+        [first, last, email, phone, id]);
+
         res.json(query.rows[0]);
     } catch (error) {
         console.log(error.message);

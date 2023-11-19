@@ -133,7 +133,7 @@ export default MaterialEdit = ({ close, job, user }) => {
             currency: 'USD',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-          }).format(cost);
+        }).format(cost);
 
         setTotal(formattedDollarAmount);
     }

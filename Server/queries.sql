@@ -91,3 +91,18 @@ WHERE user_id=$7;
 UPDATE truck
 SET name=$1, model=$2, length=$3, active=$4
 WHERE truck_id=$5;  
+
+--Update a Job
+UPDATE job
+SET pickup=$1, dropoff=$2, num_crew=$3, num_trucks=$4, job_date=$5, notes=$6, estimate=$7, rate=$8
+WHERE job_id=$9;  
+
+--Sets a customers balance
+UPDATE customer
+SET balance=$1
+WHERE customer_id=$2;
+
+--Update a customer
+UPDATE customer
+SET first_name=$1, last_name=$2, email=$3, phone=$4
+WHERE customer_id=$5;

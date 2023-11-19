@@ -103,7 +103,7 @@ export const JobBoard = () => {
                     <Schedule date={date} setDate={setDate} schedule={schedule} setSchedule={setSchedule} allAssets={[fullCrew, fullTrucks, filterJobs]} setCrew={setCrew} setJobs={setJobs} setTrucks={setTrucks} />
                 </div>
                 <div>
-                    <JobContainer jobs={jobs} setJobs={setJobs} date={date} schedule={schedule} setSchedule={setSchedule} setFullJobs={setFullJobs} />
+                    <JobContainer jobs={jobs} setJobs={setJobs} date={date} schedule={schedule} setSchedule={setSchedule} setFullJobs={setFullJobs} fullJobs={fullJobs} setDate={setDate} />
                 </div>
             </div>
             

@@ -7,6 +7,7 @@ import { JobBoard } from "./jobboard";
 import { AddJob } from "./addjob";
 import { AddUser } from "./adduser";
 import { AddTruck } from "./addtruck";
+import { ViewCustomers } from "./viewcustomers";
 
 /**
  * @description Renders out all the pages of the application
@@ -15,11 +16,12 @@ import { AddTruck } from "./addtruck";
  * @returns html of all the different pages and components
  */
 export const Home = ({ user }) => {
-    const [jobBoard, setJobBoard] = useState(true);
+    const [jobBoard, setJobBoard] = useState(false);
     const [addJob, setAddJob] = useState(false);
     const [addUser, setAddUser] = useState(false);
     const [addTruck, setAddTruck] = useState(false);
-    const [pages, setPages] = useState([jobBoard, addJob, addUser, addTruck]);
+    const [viewCustomers, setViewCustomers] = useState(true)
+    const [pages, setPages] = useState([jobBoard, addJob, addUser, addTruck, viewCustomers]);
 
     /**
      * @description Switches the state of which page to display based off the index
@@ -33,6 +35,7 @@ export const Home = ({ user }) => {
                 setAddJob(false);
                 setAddUser(false);
                 setAddTruck(false);
+                setViewCustomers(false);
             break;
 
             case 1:
@@ -40,6 +43,7 @@ export const Home = ({ user }) => {
                 setAddJob(true);
                 setAddUser(false);
                 setAddTruck(false);
+                setViewCustomers(false);
             break;
 
             case 2:
@@ -47,6 +51,7 @@ export const Home = ({ user }) => {
                 setAddJob(false);
                 setAddUser(true);
                 setAddTruck(false);
+                setViewCustomers(false);
             break;
 
             case 3:
@@ -54,6 +59,15 @@ export const Home = ({ user }) => {
                 setAddJob(false);
                 setAddUser(false);
                 setAddTruck(true);
+                setViewCustomers(false);
+            break;
+
+            case 4:
+                setJobBoard(false);
+                setAddJob(false);
+                setAddUser(false);
+                setAddTruck(false);
+                setViewCustomers(true);
             break;
         }
     }
@@ -62,18 +76,18 @@ export const Home = ({ user }) => {
      * Update the pages state array based on the latest state values
      */
     useEffect(() => {
-        setPages([jobBoard, addJob, addUser, addTruck]);
-    }, [jobBoard, addJob, addUser, addTruck]);
+        setPages([jobBoard, addJob, addUser, addTruck, viewCustomers]);
+    }, [jobBoard, addJob, addUser, addTruck, viewCustomers]);
 
 
     return (
-        <div className="h-[100vh] flex-col justify-center items-start">
+        <div className="h-[100vh] flex-col justify-center items-start overflow-hidden">
             <Header updatePage={updatePage} user={user} pageColors={pages}/>
             {jobBoard ? <JobBoard /> : null}
             {addJob ? <AddJob /> : null}
             {addUser ? <AddUser /> : null}
             {addTruck ? <AddTruck /> : null}
-
+            {viewCustomers ? <ViewCustomers /> : null}
         </div>
     )
 }

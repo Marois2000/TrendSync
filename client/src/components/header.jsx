@@ -26,6 +26,7 @@ export const Header = ({ user, updatePage, pageColors }) => {
                 <Tab title="Add Job" updatePage={() => updatePage(1)} colored={pageColors[1]}/>
                 <Tab title="Add User" updatePage={() => updatePage(2)} colored={pageColors[2]}/>
                 <Tab title="Add Truck" updatePage={() => updatePage(3)} colored={pageColors[3]}/>
+                <Tab title="View Customers" updatePage={() => updatePage(4)} colored={pageColors[4]}/>
             </div>
         </div>
     )
