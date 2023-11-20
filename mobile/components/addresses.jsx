@@ -26,7 +26,7 @@ export default Addresses = ({ pickup, dropoff}) => {
                     <StyledText classes={["color:primary", "my:2", "text-align:left", "w:[70%]"]}>{pickup}</StyledText>
                 </StyledOpacity>
 
-                <StyledOpacity>
+                <StyledOpacity onPress={() => openMaps(dropoff)}>
                     <StyledText classes={["color:primary", "my:2", "text-align:left", "w:[70%]"]}>{dropoff}</StyledText>
                 </StyledOpacity>
             </StyledView>

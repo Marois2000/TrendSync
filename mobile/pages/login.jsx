@@ -7,6 +7,8 @@ import Button from '../components/button';
 import { useState } from 'react';
 import path from "../path";
 import { KeyboardAvoidingView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-root-toast';
 
 export default LogIn = ({ setUser }) => {
     const [email, setEmail] = useState("");
@@ -30,10 +32,33 @@ export default LogIn = ({ setUser }) => {
             });
             const data = await res.json();
 
-            setUser(data[0]);
+            if(data[0]) {
+                storeUserInStorage(data[0]);
+                setUser(data[0]);
+            } else {
+                Toast.show('Invalid Email or Password!', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.TOP,
+                    backgroundColor: '#FF3333',
+                    opacity: 90,
+
+                });
+            }
         } catch (error) {
             console.log(error.message);
         }
+    }
+
+    const storeUserInStorage = async user => {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() + 720); 
+        const expiryTimeInTimestamp = Math.floor(now.getTime() / 1000); 
+        const data = {
+            expiryTime: expiryTimeInTimestamp,
+            user: user
+        };
+
+        await AsyncStorage.setItem('user', JSON.stringify(data));
     }
 
 

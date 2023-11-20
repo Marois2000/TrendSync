@@ -123,14 +123,41 @@ app.post('/trendsync/initschedule', async(req, res) => {
 });
 
 /**
- * Get a Schedule
+ * Get a Schedule, and check if the jobs have been changed and update them
  */
 app.post('/trendsync/getschedule', async(req, res) => {
     try {
         const {date} = req.body;
 
+        const jobsOnThatDate = await pool.query('SELECT * FROM job WHERE job_date=$1;', [date]);
+
+        let jobIds = [];
+        jobsOnThatDate.rows.forEach(job => {
+            jobIds = [...jobIds, job.job_id];
+        });
+
         const query = await pool.query('SELECT * FROM schedule WHERE schedule_date=$1;',
         [date]);
+
+
+        query.rows[0].schedule.timeslots.forEach(timeslot => {
+            for (let index = 0; index < timeslot.jobid.length; index++) {
+                const job = timeslot.jobid[index];
+
+                if(jobIds.includes(job.job_id)) {
+                    for (let jobindex = 0; jobindex < jobsOnThatDate.rows.length; jobindex++) {
+                        const jobToCheck = jobsOnThatDate.rows[jobindex];
+                        if(jobToCheck.job_id == job.job_id) {
+                            timeslot.jobid[index] = jobToCheck;
+                        }
+                    }
+                } else {
+                    timeslot.jobid.splice(index, 1);
+                }
+                
+            }
+        });
+
 
         res.json(query.rows);
     } catch (error) {
@@ -303,7 +330,40 @@ app.post('/trendsync/getusersjob', async(req, res) => {
     try {
         const { userId, date } = req.body;
 
-        const scheduleQuery = await pool.query('SELECT schedule FROM schedule WHERE schedule_date=$1;', [date]);
+
+
+        const jobsOnThatDate = await pool.query('SELECT * FROM job WHERE job_date=$1;', [date]);
+
+        let jobIds = [];
+        jobsOnThatDate.rows.forEach(job => {
+            jobIds = [...jobIds, job.job_id];
+        });
+
+        const scheduleQuery = await pool.query('SELECT schedule FROM schedule WHERE schedule_date=$1;',
+        [date]);
+
+        console.log(scheduleQuery.rows[0].schedule.timeslots)
+
+        scheduleQuery.rows[0].schedule.timeslots.forEach(timeslot => {
+            for (let index = 0; index < timeslot.jobid.length; index++) {
+                const job = timeslot.jobid[index];
+
+                if(jobIds.includes(job.job_id)) {
+                    for (let jobindex = 0; jobindex < jobsOnThatDate.rows.length; jobindex++) {
+                        const jobToCheck = jobsOnThatDate.rows[jobindex];
+                        if(jobToCheck.job_id == job.job_id) {
+                            timeslot.jobid[index] = jobToCheck;
+                        }
+                    }
+                } else {
+                    timeslot.jobid.splice(index, 1);
+                }
+                
+            }
+        });
+
+
+
         
         let usersTimeslot = {};
         if(scheduleQuery.rows.length > 0) {
@@ -525,6 +585,116 @@ app.put('/trendsync/updatecustomer', async(req, res) => {
     } catch (error) {
         console.log(error.message);
         res.status(500).json({error: error.message});
+    }
+});
+
+
+/**
+ * Delete a job
+ */
+app.delete('/trendsync/deletejob', async(req, res) => {
+    try {
+        const { id } = req.body;
+
+        const query = await pool.query('DELETE FROM job WHERE job_id=$1 RETURNING *;', 
+        [id]);
+
+        res.json(query.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Sets a jobs start time
+ */
+app.put('/trendsync/startjob', async(req, res) => {
+    try {
+        const { time, id } = req.body;
+        const query = await pool.query('UPDATE job SET start_time=$1 WHERE job_id=$2;', [time, id]);
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+/**
+ * Sets a jobs end time
+ */
+app.put('/trendsync/endjob', async(req, res) => {
+    try {
+        const { time, id } = req.body;
+        const query = await pool.query('UPDATE job SET end_time=$1 WHERE job_id=$2;', [time, id]);
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+/**
+ * Sets a jobs Total
+ */
+app.put('/trendsync/jobtotal', async(req, res) => {
+    try {
+        const { id } = req.body;
+        const jobQuery = await pool.query('SELECT * FROM job WHERE job_id=$1', [id]);
+        const services = await pool.query('SELECT js.*, s.name, s.price FROM job_service js JOIN service s ON js.service_id = s.service_id WHERE js.job_id = $1;', [id]);
+        const materials = await pool.query('SELECT jm.*, m.name, m.price FROM job_material jm JOIN material m ON jm.material_id = m.material_id WHERE jm.job_id = $1;', [id]);
+
+        const job = jobQuery.rows[0];
+
+        let materialCost = 0;
+        materials.rows.forEach(material => {
+            materialCost += material.quantity * material.price;
+        });
+
+        let serviceCost = 0;
+        services.rows.forEach(service => {
+            serviceCost += service.quantity * service.price;
+        });
+
+        const end = job.end_time.split(":");
+        const start = job.start_time.split(":");
+
+        const hours = end[0] - start[0];
+        const minutes = end[1] - start[1];
+
+        const minutesPercentage = minutes / 60;
+        let total = 0;
+        if(hours + minutesPercentage < job.estimate) {
+            total += job.estimate * job.rate;
+        } else {
+            total += hours * job.rate;
+            if(15 <= minutes < 30) {
+                total += 0.25 * job.rate;
+            } else if(30 <= minutes < 45) {
+                total += 0.5 * job.rate;
+            } else if(45 <= minutes < 60) {
+                total += 0.75 * job.rate;
+            }
+        }
+
+        total += materialCost + serviceCost;
+
+        const totalQuery = await pool.query('UPDATE job SET price=$1 WHERE job_id=$2;', [total, id]);
+
+        res.json(total);
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+/**
+ * Completes a job
+ */
+app.put('/trendsync/finishjob', async(req, res) => {
+    try {
+        const { customerId, balance, jobId } = req.body;
+        await pool.query('UPDATE customer SET balance=$1 WHERE customer_id=$2;', [balance, customerId]);
+        await pool.query('UPDATE Job SET complete=true WHERE job_id=$1;', [jobId])
+
+        res.json("OK");
+    } catch (error) {
+        console.log(error.message);
     }
 });
 

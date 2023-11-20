@@ -196,7 +196,7 @@ export default ServiceEdit = ({ close, job, user }) => {
                             <StyledView classes={["w:[80%]", "m:2", "p:2", "bg:primary2", "flex:row", "justify:between"]} key={index}>
                                 <StyledText classes={["text:lg", "color:background", "text-align:left"]} >{service.name}</StyledText>
                                 
-                                {user.rank > 0 ? 
+                                {user.rank > 0 && !job.complete ? 
                                     <Entypo name="plus" size={24} color="#F5F5F5" onPress={() => addServiceToUsed(service)} />
                                 : null }
                             </StyledView>
@@ -214,7 +214,7 @@ export default ServiceEdit = ({ close, job, user }) => {
                                 <StyledView classes={["w:[80%]", "m:2", "p:2", "bg:grey1", "flex:row", "justify:between", "items:center"]} key={index}>
                                     <StyledText classes={["text:lg", "color:primary", "text-align:left", "w:[40%]"]} key={index}>{service.name}</StyledText>
 
-                                    {user.rank > 0 ? 
+                                    {user.rank > 0 && !job.complete ? 
                                         <StyledView classes={["flex:row", "flex:1", "justify:center", "items:center"]}>
                                             <MaterialCommunityIcons name='chevron-left' size={24} color="#1B3F9C" onPress={() => setServiceQuantity(1, index, true, -1)}/>
                                             <StyledTextInput value={`${service.quantity}`} onChangeText={(e) => setServiceQuantity(e, index, false, 0)} keyboardType='numeric'  classes={["bg:grey2", "rounded:md", "p:1", "mx:3"]}/>
@@ -222,7 +222,7 @@ export default ServiceEdit = ({ close, job, user }) => {
                                         </StyledView>
                                     : <StyledText classes={["bg:grey2", "rounded:md", "p:1", "mx:3"]}>{`${service.quantity}`}</StyledText> }
 
-                                    {user.rank > 0 ? 
+                                    {user.rank > 0 && !job.complete ? 
                                         <FontAwesome name="close" size={24} color="#1B3F9C" onPress={() => removeFromUsedServices(service)} />
                                     : null }
                                 </StyledView>
@@ -236,7 +236,7 @@ export default ServiceEdit = ({ close, job, user }) => {
                             <StyledText classes={["color:background", "text:lg", "text-align:right"]}>{total}</StyledText>
                         </StyledView>
                         
-                        {user.rank > 0 ? 
+                        {user.rank > 0 && !job.complete ? 
                             <StyledOpacity classes={["border:1", "px:5", "py:2", "border-color:background", "rounded:lg"]} onPress={updateServices}>
                                 <StyledText classes={["color:background", "text:xl"]}>Save Changes</StyledText>
                             </StyledOpacity>

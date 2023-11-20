@@ -38,9 +38,10 @@ export default JobCard = ({ job, crew, trucks, setJob}) => {
     }
 
     return (
-        <StyledOpacity onPress={() => setJob(job)} classes={["justify:center", "items:center", "w:[70%]", "rounded:lg", "my:2", "shadow:xl"]}>
-            <StyledView classes={["w:full", "bg:secondary2", "rounded-t:lg"]}>
+        <StyledOpacity onPress={() => setJob(job)} classes={["justify:center", "items:center", "w:[80%]", "rounded:lg", "my:2", "shadow:xl"]}>
+            <StyledView classes={["w:full", "bg:secondary2", "rounded-t:lg", "flex:row", "justify:between", "items:center"]}>
                 <StyledText classes={["text:xl", "color:background", "p:2"]}>{title}</StyledText>
+                {job.complete ? <StyledText classes={["px:3", "color:background", "text:lg"]}>Completed</StyledText> : null}
             </StyledView>
 
             <StyledView classes={["w:full", "bg:grey1", "border-b:1"]}>

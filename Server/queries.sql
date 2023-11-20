@@ -106,3 +106,31 @@ WHERE customer_id=$2;
 UPDATE customer
 SET first_name=$1, last_name=$2, email=$3, phone=$4
 WHERE customer_id=$5;
+
+--Delete a job
+DELETE FROM job WHERE job_id=$1;
+
+--Set Jobs start time
+UPDATE job
+SET start_time=$1
+WHERE job_id=$2;
+
+--Set Jobs end time
+UPDATE job
+SET end_time=$1
+WHERE job_id=$2;
+
+--Set a Jobs price
+UPDATE job
+SET price=$1
+WHERE job_id=$2;
+
+--Set a Customers Balance
+UPDATE customer
+SET balance=$1
+WHERE customer_id=$2;
+
+--Set a job as complete
+UPDATE Job
+SET complete=true
+WHERE job_id=$1;

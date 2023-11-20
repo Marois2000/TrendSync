@@ -1,17 +1,19 @@
 /**
  * @author Tyler Marois
  */
-import { StyledView, StyledText, StyledScroll } from '../StyleWrappers';
+import { StyledView, StyledText, StyledScroll, StyledOpacity } from '../StyleWrappers';
 import Inputfield from '../components/inputfield';
 import Button from '../components/button';
 import { useEffect, useState } from 'react';
 import path from "../path";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import Jobcard from '../components/jobcard';
 import Jobdetails from './jobdetails';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default Home = ({ user }) => {
+export default Home = ({ user, setUser }) => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -20,7 +22,6 @@ export default Home = ({ user }) => {
 
     const options = { month: 'long', day: 'numeric' };
     
-
     const [date, setDate] = useState(today);
     const [dateForDB, setDateForDB] = useState(stringDate);
     const [displayDate, setDisplayDate] = useState(today.toLocaleString('en-US', options));
@@ -33,6 +34,7 @@ export default Home = ({ user }) => {
     const [job, setJob] = useState({});
     const [customer, setCustomer] = useState({});
 
+    const [userOptions, setUserOptions] = useState(false);
 
     useEffect(() => {
         setCrew([]);
@@ -139,12 +141,17 @@ export default Home = ({ user }) => {
         }
     }
 
+    const logout = async () => {
+        await AsyncStorage.removeItem('user');
+        setUser({});
+    }
+
     return (
-        <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background"]}>
+        <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background"]} >
             {showJob ?   <Jobdetails job={job} customer={customer} backToDash={comeBackToDash} user={user}/> :
 
 
-                    <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background", "w:full"]}>
+                    <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background", "w:full"]} >
                         <StyledView classes={["justify:center", "items:end", "bg:background", "w:full", "h:[10%]", "flex:row", "pb:2"]}>
                             <StyledView classes={["w:[33%]"]}><StyledText> </StyledText></StyledView>
                             <StyledText classes={["flex:1", "text-align:center", "text:lg"]}>Dashboard</StyledText>
@@ -153,12 +160,13 @@ export default Home = ({ user }) => {
                                         name='dots-vertical' 
                                         size={32} 
                                         color="#1B3F9C"
-                                        onPress={() => console.log("Add Functionality")}
+                                        onPress={() => setUserOptions(!userOptions)}
                                 /> 
+                            
                             </StyledView>
                         </StyledView>
 
-                        <StyledView classes={["justify:between", "items:center", "bg:primary", "w:full", "h:[20%]", "flex:row"]}>
+                        <StyledView classes={["justify:between", "items:center", "bg:primary", "w:full", "h:[20%]", "flex:row"]} onTouchEnd={() => setUserOptions(false)}>
                             <StyledView classes={["m:5"]}>
                                 <MaterialCommunityIcons 
                                     name='chevron-left' 
@@ -182,7 +190,7 @@ export default Home = ({ user }) => {
                             </StyledView>
                         </StyledView>
 
-                        <StyledScroll classes={["flex:1", "bg:background", "w:full"]} contentContainerStyle={{alignItems:'center'}}>
+                        <StyledScroll classes={["flex:1", "bg:background", "w:full"]} contentContainerStyle={{alignItems:'center'}} onTouchEnd={() => setUserOptions(false)}>
                             {Array.isArray(jobs) && jobs.length > 0 ? (jobs.map((job, index) => {
                                 return(
                                     <Jobcard job={job} crew={crew} trucks={trucks} setJob={goToJobDetails} key={index}/>
@@ -191,11 +199,19 @@ export default Home = ({ user }) => {
                             : <StyledText classes={["m:5", "text:4xl"]}>No Jobs Today</StyledText>}
 
                         </StyledScroll>
+                        
                     </StyledView>
 
             }
             
-            
+            {userOptions ? 
+                <StyledView classes={["absolute", "top:[10%]", "right:1", 'bg:background', "w:[30%]", "border:2", "border-color:primary2"]}>
+                    <StyledOpacity classes={["my:2", "w:full", "items:center", "flex:row", "justify:around"]} onPress={logout}>
+                        <StyledText classes={["text-align:right"]}>Logout</StyledText>
+                        <MaterialIcons name="logout" size={24} color="black" />
+                    </StyledOpacity>
+                </StyledView>
+            : null}
         </StyledView>
     )
 }

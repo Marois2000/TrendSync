@@ -30,7 +30,7 @@ export default CustomerInfo = ({ first, last, phone, email }) => {
 
             <StyledView classes={["px:2"]}>
                 <StyledText classes={["color:background", "text:xl"]}>{capFirstLetter(first) + " " + capFirstLetter(last)}</StyledText>
-                <StyledText classes={["color:background", "text:xl"]}>{email}</StyledText>
+                <StyledText classes={["color:background"]}>{email}</StyledText>
                 <StyledOpacity onPress={() => onPressMobileNumberClick(phone.replace("-", "").replace("(", "").replace(")", "").replace(" ", ""))}><StyledText classes={["color:background", "text:xl"]}>{phone}</StyledText></StyledOpacity>
             </StyledView>
         </StyledView>

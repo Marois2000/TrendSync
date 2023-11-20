@@ -15,6 +15,10 @@ import Materialsbutton from '../components/materialsbutton';
 import Servicesbutton from '../components/servicesbutton';
 import MaterialEdit from './materialedit';
 import ServiceEdit from './serviceedit';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Toast from 'react-native-root-toast';
+import CompleteJob from "./completejob";
+
 
 
 export default JobDetails = ({ backToDash, job, customer, user }) => {
@@ -22,6 +26,10 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
     const [extras, setExtras] = useState(false);
     const [openMaterials, setOpenMaterials] = useState(false);
     const [openServices, setOpenServices] = useState(false);
+
+    const [settingStart, setSettingStart] = useState(false);
+    const [settingEnd, setSettingEnd] = useState(false);
+    const [completingJob, setCompletingJob] = useState(false);
 
     
     useEffect(() => {
@@ -37,6 +45,65 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
         return () => subscription?.remove();
     });
 
+    const handleStartTime = async (time) => {
+        const body = {
+            id: job.job_id,
+            time: time
+        }
+        
+        job.start_time = time;
+
+        try {
+            Toast.show('Start Time Set!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.TOP,
+                backgroundColor: '#4BB543',
+                opacity: 90,
+            });
+            
+            const req = await fetch(path+"/trendsync/startjob", {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    const handleEndTime = async (time) => {
+        const body = {
+            id: job.job_id,
+            time: time
+        }
+        
+
+
+        job.end_time = time;
+
+        try {
+            Toast.show('End Time Set!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.TOP,
+                backgroundColor: '#4BB543',
+                opacity: 90,
+            });
+            
+            const req = await fetch(path+"/trendsync/endjob", {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
     return(
         <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background", "w:full"]}>
@@ -68,6 +135,25 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
 
                     <Addresses pickup={job.pickup} dropoff={job.dropoff} />
                     <Notes notes={job.notes}/>
+
+                    {job.start_time == undefined ? 
+                        <StyledOpacity onPress={() => setSettingStart(true)} classes={["mb:20", "mt:5", "bg:primary", "border:2", "w:[80%]", "flex", "justify:center", "items:center"]}>
+                            <StyledText classes={["color:background", "text:2xl"]}>Start Job</StyledText>
+                        </StyledOpacity> 
+                    : null}
+
+                    {job.start_time != undefined && job.end_time == undefined ? 
+                        <StyledOpacity onPress={() => setSettingEnd(true)} classes={["mb:20", "mt:5", "bg:primary", "border:2", "w:[80%]", "flex", "justify:center", "items:center"]}>
+                            <StyledText classes={["color:background", "text:2xl"]}>End Job</StyledText>
+                        </StyledOpacity> 
+                    : null}
+
+                    {job.start_time != undefined && job.end_time != undefined && !job.complete ? 
+                        <StyledOpacity onPress={() => setCompletingJob(true)} classes={["mb:20", "mt:5", "bg:primary", "border:2", "w:[80%]", "flex", "justify:center", "items:center"]}>
+                            <StyledText classes={["color:background", "text:2xl"]}>Complete Job</StyledText>
+                        </StyledOpacity> 
+                    : null}
+
                 </StyledScroll>
             : 
                 <StyledView classes={["flex:1", "justify:start", "items:start", "bg:background", "w:full", "flex:row", "h:full"]}>
@@ -85,13 +171,46 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
                     <StyledScroll classes={["flex:1", "bg:background", "h:full"]} contentContainerStyle={{alignItems:'center'}}>
                         <Addresses pickup={job.pickup} dropoff={job.dropoff} />
                         <Notes notes={job.notes}/>
+
+                        {job.start_time == undefined ? 
+                            <StyledOpacity onPress={() => setSettingStart(true)} classes={["mb:20", "mt:5", "bg:primary", "border:2", "w:[80%]", "flex", "justify:center", "items:center"]}>
+                                <StyledText classes={["color:background", "text:2xl"]}>Start Job</StyledText>
+                            </StyledOpacity> 
+                        : null}
+
+                        {job.start_time != undefined && job.end_time == undefined ? 
+                            <StyledOpacity onPress={() => setSettingEnd(true)} classes={["mb:20", "mt:5", "bg:primary", "border:2", "w:[80%]", "flex", "justify:center", "items:center"]}>
+                                <StyledText classes={["color:background", "text:2xl"]}>End Job</StyledText>
+                            </StyledOpacity> 
+                        : null}
+
+                        {job.start_time != undefined && job.end_time != undefined && !job.complete ? 
+                            <StyledOpacity onPress={() => setCompletingJob(true)} classes={["mb:20", "mt:5", "bg:primary", "border:2", "w:[80%]", "flex", "justify:center", "items:center"]}>
+                                <StyledText classes={["color:background", "text:2xl"]}>Complete Job</StyledText>
+                            </StyledOpacity> 
+                        : null}
                     </StyledScroll>
                 </StyledView>
             }
             
             {openMaterials ? <MaterialEdit close={() => setOpenMaterials(false)} job={job} user={user}/> : null}
             {openServices ? <ServiceEdit close={() => setOpenServices(false)} job={job} user={user}/> : null}
+            {completingJob ? <CompleteJob close={() => setCompletingJob(false)} job={job} user={user} toast={Toast}/> : null}
 
+
+            <DateTimePickerModal
+                isVisible={settingStart}
+                mode="time"
+                onConfirm={(time) => handleStartTime(time.getHours() + ":" + time.getMinutes())}
+                onCancel={() => setSettingStart(false)}
+            />
+
+            <DateTimePickerModal
+                isVisible={settingEnd}
+                mode="time"
+                onConfirm={(time) => handleEndTime(time.getHours() + ":" + time.getMinutes())}
+                onCancel={() => setSettingEnd(false)}
+            />
 
 
         </StyledView>

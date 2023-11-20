@@ -50,6 +50,26 @@ export const EditJobModal = ({ job, onClose, setGlobalDate }) => {
         }
     }
 
+    const deleteJob = async() => {
+        const body = {
+            id: job.job_id
+        }
+        try {
+            const req = await fetch(path + "/trendsync/deletejob", {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+
+            const res = await req.json()
+            location.reload();
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
     
 
     return (
@@ -84,8 +104,9 @@ export const EditJobModal = ({ job, onClose, setGlobalDate }) => {
 
                
 
-                <div className="flex justify-start w-full my-5 px-5">
+                <div className="flex justify-between w-full my-5 px-5">
                     <MyButton text="Update" update={updateJob}/>
+                    <button onClick={deleteJob} className="bg-red-600 px-3 text-lg text-white border-2 border-red-800 rounded-lg">Delete</button>
                 </div>
 
             </div>
