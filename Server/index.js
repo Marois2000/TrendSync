@@ -140,23 +140,25 @@ app.post('/trendsync/getschedule', async(req, res) => {
         [date]);
 
 
-        query.rows[0].schedule.timeslots.forEach(timeslot => {
-            for (let index = 0; index < timeslot.jobid.length; index++) {
-                const job = timeslot.jobid[index];
-
-                if(jobIds.includes(job.job_id)) {
-                    for (let jobindex = 0; jobindex < jobsOnThatDate.rows.length; jobindex++) {
-                        const jobToCheck = jobsOnThatDate.rows[jobindex];
-                        if(jobToCheck.job_id == job.job_id) {
-                            timeslot.jobid[index] = jobToCheck;
+        if(query.rows.length > 0) {
+            query.rows[0].schedule.timeslots.forEach(timeslot => {
+                for (let index = 0; index < timeslot.jobid.length; index++) {
+                    const job = timeslot.jobid[index];
+    
+                    if(jobIds.includes(job.job_id)) {
+                        for (let jobindex = 0; jobindex < jobsOnThatDate.rows.length; jobindex++) {
+                            const jobToCheck = jobsOnThatDate.rows[jobindex];
+                            if(jobToCheck.job_id == job.job_id) {
+                                timeslot.jobid[index] = jobToCheck;
+                            }
                         }
+                    } else {
+                        timeslot.jobid.splice(index, 1);
                     }
-                } else {
-                    timeslot.jobid.splice(index, 1);
+                    
                 }
-                
-            }
-        });
+            });
+        }
 
 
         res.json(query.rows);
