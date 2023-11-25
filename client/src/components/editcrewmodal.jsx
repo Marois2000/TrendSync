@@ -10,6 +10,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
+/**
+ * @description A pop up menu for editing crew members
+ * 
+ * @param {*} crewMember The crew member being edited
+ * @param {*} onClose Closes the modal
+ * 
+ * @returns A pop up menu
+ */
 export const EditCrewModel = ({ crewMember, onClose }) => {
     const [first, setFirst] = useState(crewMember.first_name); // The users first name
     const [last, setLast] = useState(crewMember.last_name); // The users last name
@@ -18,12 +26,14 @@ export const EditCrewModel = ({ crewMember, onClose }) => {
     const [rank, setRank] = useState(crewMember.rank); // The users rank
     const [active, setActive] = useState(crewMember.active); // If the user is active or not
 
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    const capitalLetterRegex = /[A-Z]/;
-    const numberRegex = /[0-9]/;
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; // Regex for special characters
+    const capitalLetterRegex = /[A-Z]/; // Regex for capital letters
+    const numberRegex = /[0-9]/; // Regex for numbers
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Regex for emails
     
+    /**
+     * Calls the API and updates the user
+     */
     const updateUser = async() => {
         const body = {
             first: first,
@@ -46,22 +56,15 @@ export const EditCrewModel = ({ crewMember, onClose }) => {
             });
 
             const res = await req.json();
-            toast.success('User Updated', {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
             location.reload();
         } catch (error) {
             console.log(error.message);
         }
     }
 
+    /**
+     * @description Uses the regex to check if a given email or password are valid
+     */
     const checkValidInputs = () => {
         if(password.length >= 12 && specialCharRegex.test(password) && capitalLetterRegex.test(password) && numberRegex.test(password)) {
             if(emailRegex.test(email)) {

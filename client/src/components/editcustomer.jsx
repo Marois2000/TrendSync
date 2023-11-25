@@ -8,13 +8,24 @@ import { MyButton } from "./mybutton";
 import { InputField } from "./inputfield";
 import { path } from "../path";
 
-
+/**
+ * @description A pop up for editing customers
+ * 
+ * @param {*} customer The customer being edited
+ * @param {*} onClose Closes the modal
+ * @param {*} toast Display some toast when needed
+ * 
+ * @returns A pop up menu
+ */
 export const EditCustomer = ({ customer, onClose, toast }) => {
-    const [first, setFirst] = useState(customer.first_name);
-    const [last, setLast] = useState(customer.last_name);
-    const [email, setEmail] = useState(customer.email);
-    const [phone, setPhone] = useState(customer.phone);
+    const [first, setFirst] = useState(customer.first_name); // The customers first name
+    const [last, setLast] = useState(customer.last_name); // The customers last name
+    const [email, setEmail] = useState(customer.email); // The customers email
+    const [phone, setPhone] = useState(customer.phone); // The customers phone number
 
+    /**
+     * Calls the API and updates the customer
+     */
     const updateCustomer = async() => {
         const body = {
             first: first,
@@ -23,7 +34,6 @@ export const EditCustomer = ({ customer, onClose, toast }) => {
             phone: phone,
             id: customer.customer_id
         }
-    
         try {
             const req = await fetch(path + "/trendsync/updatecustomer", {
                 method: 'PUT',
@@ -72,8 +82,18 @@ export const EditCustomer = ({ customer, onClose, toast }) => {
                     <MyButton text="Submit" update={updateCustomer}/>
                 </div>
             </div>
-
-            
+            <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar={true}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
         </div>
     )
 }

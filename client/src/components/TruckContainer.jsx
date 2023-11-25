@@ -7,18 +7,33 @@ import { path } from "../path";
 import { useDrop } from "react-dnd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
-import { EditTruckModel } from "./edittruckmodal";
+import { EditTruckModal } from "./edittruckmodal";
 
+/**
+ * @description A container of truck assets
+ * 
+ * @param {*} trucks The truck array, containing trucks not on schedule that day
+ * @param {*} setTrucks Sets the trucks array
+ * @param {*} date The given date
+ * @param {*} schedule The given schedule
+ * @param {*} setSchedule Sets the given schedule
+ * @param {*} setFullTrucks Sets the full trucks array
+ * @param {*} fullTrucks Array of all trucks in the system
+ * 
+ * @returns A container containing truck job assets
+ */
 export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule, setFullTrucks, fullTrucks}) => {
-    const [editingTrucks, setEditingTrucks] = useState(false);
-    const [trucksmodal, setTrucksModal] = useState(false);
-    const [truckBeingEdited, setTruckBeingEdited] = useState({});
+    const [editingTrucks, setEditingTrucks] = useState(false); // Determines if we are editing trucks or not
+    const [trucksmodal, setTrucksModal] = useState(false); // Determines if the edit truck modal is open or not
+    const [truckBeingEdited, setTruckBeingEdited] = useState({}); // The truck being edited
 
     useEffect(() => {
         getTrucks();
     }, [date]);
 
-
+    /**
+     * @description Calls the API and gets the trucks
+     */
     const getTrucks = async() => {
         const body = {
             date: date
@@ -47,8 +62,13 @@ export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule,
         collect: (monitor) => ({
             isOver: monitor.isOver()
         })
-    });
+    }); // Allows for dropping items
 
+    /**
+     * @description Handles dropping a truck asset into the container
+     * 
+     * @param {*} item The item to be dropped
+     */
     const handleDrop = (item) => {
         let copyOfSlot = schedule[item.index];
         let truckList = copyOfSlot.trucks;
@@ -70,6 +90,11 @@ export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule,
         } 
     }
 
+    /**
+     * @description Sets the truck being edited and opens the edit truck modal
+     * 
+     * @param {*} truck The truck being edited
+     */
     const openModal = (truck) => {
         setTruckBeingEdited(truck);
         setTrucksModal(true);
@@ -100,7 +125,7 @@ export const TruckContainer = ({ trucks, setTrucks, date, schedule, setSchedule,
                 </div>
             </div>
 
-            {trucksmodal ? <EditTruckModel truck={truckBeingEdited} onClose={setTrucksModal} /> : null}
+            {trucksmodal ? <EditTruckModal truck={truckBeingEdited} onClose={setTrucksModal} /> : null}
         </>
     )
 }

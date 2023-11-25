@@ -4,14 +4,25 @@
 import React, { useEffect, useState } from "react";
 import { path } from "../path";
 
-
-export const ClickableJobCard = ({ crew, trucks, pickup, dropoff, customerId, update }) => {
-    const [title, setTitle] = useState("");
+/**
+ * @description A version of the job card that leads users to the edit job modal
+ * 
+ * @param {*} crew The jobs crew count
+ * @param {*} trucks The jobs truck count
+ * @param {*} customerId ID of the customer this job belongs to
+ * @param {*} update The function passed to the button to do something
+ * @returns A clickable job card for editing jobs
+ */
+export const ClickableJobCard = ({ crew, trucks, customerId, update }) => {
+    const [title, setTitle] = useState(""); // The customers name becomes the title
 
     useEffect(() => {
         getTitle();
     }, []);
 
+    /**
+     * @description Call the API and get the customers name based of the customer's ID
+     */
     const getTitle = async() => {
         const body = {
             id: customerId
@@ -33,8 +44,6 @@ export const ClickableJobCard = ({ crew, trucks, pickup, dropoff, customerId, up
             console.log(error.message);
         }
     }
-
-
 
     return (
         <div className="flex flex-col justify-center items-center m-1 cursor-default w-[12vw] relative">

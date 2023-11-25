@@ -20,10 +20,10 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
  * @returns HTML for a popup modal
  */
 export const AddCustomerModal = ({ isOpen, onClose, setCustomer, updateCustomers }) => {
-    const [first, setFirst] = useState("");
-    const [last, setLast] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [first, setFirst] = useState(""); // The customers First name
+    const [last, setLast] = useState(""); // The customers Last name
+    const [email, setEmail] = useState(""); // The customers Email
+    const [phone, setPhone] = useState(""); // The customers Phone number
 
     const modalcss = isOpen
     ? 'fixed inset-0 flex items-center justify-center z-40 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50'

@@ -10,11 +10,10 @@ import { Tab } from './tab';
  * @param {*} user The users information
  * @param {*} updatePage The function used to change the state that controls which page is displayed
  * @param {*} pageColors An array of booleans telling which tab to be colored
+ * 
  * @returns A header with tabs/buttons to control the app
  */
 export const Header = ({ user, updatePage, pageColors }) => {
-
-
     return (
         <div className="flex-col bg-primary">
             <div className="flex justify-between items-center">

@@ -10,16 +10,32 @@ import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { ClickableJobCard } from "./clickablejobcard";
 import { EditJobModal } from "./editjobmodal";
 
+/**
+ * @description A job container that holds job cards
+ * 
+ * @param {*} jobs The array of jobs that are not on the schedule
+ * @param {*} setJobs Sets the jobs array
+ * @param {*} date The given date
+ * @param {*} schedule The given schedule
+ * @param {*} setSchedule Sets the given schedule
+ * @param {*} setFullJobs Sets the full jobs array
+ * @param {*} fullJobs The array of all the jobs on this date, even if they're on the schedule
+ * @param {*} setDate Sets the date
+ * 
+ * @returns 
+ */
 export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFullJobs, fullJobs, setDate }) => {
-    const [editingJobs, setEditingJobs] = useState(false);
-    const [jobsmodal, setJobsModal] = useState(false);
-    const [jobBeingEdited, setJobBeingEdited] = useState({});
+    const [editingJobs, setEditingJobs] = useState(false); // Determines if editing jobs or not
+    const [jobsmodal, setJobsModal] = useState(false); // Determines if the edit job modal is open or not
+    const [jobBeingEdited, setJobBeingEdited] = useState({}); // The job being edited
 
     useEffect(() => {
         getJobs();
     }, [date]);
 
-
+    /**
+     * @description Calls the API and gets the jobs
+     */
     const getJobs = async() => {
         const body = {
             date: date
@@ -49,8 +65,13 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFu
         collect: (monitor) => ({
             isOver: monitor.isOver()
         })
-    });
+    }); // Allows for dropping
 
+    /**
+     * @description Handles the dropping of a job card into the container
+     * 
+     * @param {*} item The job to be dropped in
+     */
     const handleDrop = (item) => {
         let copyOfSlot = schedule[item.index];
         let jobsList = copyOfSlot.jobid;
@@ -72,6 +93,13 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFu
         } 
     }
 
+    /**
+     * @description Calls the API and gets the job title/customer name
+     * 
+     * @param {*} customerId The customers ID for this job
+     * 
+     * @returns The title of a job as a string
+     */
     const getTitle = async(customerId) => {
         const body = {
             id: customerId
@@ -94,6 +122,11 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFu
         }
     }
 
+    /**
+     * @description Sets the job being edited and opens the job edit modal
+     * 
+     * @param {*} job The job to be edited
+     */
     const openModal = (job) => {
         setJobBeingEdited(job);
         setJobsModal(true);

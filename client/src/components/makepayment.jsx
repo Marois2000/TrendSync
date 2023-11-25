@@ -7,11 +7,22 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { MyButton } from "./mybutton";
 import { path } from "../path";
 
-
+/**
+ * @description Allows for updating a customers balance
+ * 
+ * @param {*} customer The customer whose balance we will update
+ * @param {*} onClose Closes the modal
+ * @param {*} toast Show some toast when necessary
+ *
+ * @returns A pop up modal to edit balances
+ */
 export const MakePayment = ({ customer, onClose, toast }) => {
     const [payment, setPayment] = useState(customer.balance);
     const [remaining, setRemaining] = useState(customer.balance - payment);
 
+    /**
+     * @description Calls the API and updates a customers balance
+     */
     const makePayment = async() => {
         const body = {
             balance: remaining,
@@ -44,6 +55,11 @@ export const MakePayment = ({ customer, onClose, toast }) => {
         }
     }
 
+    /**
+     * @description Updates the balance state given the current payment
+     * 
+     * @param {*} value The current payment entered
+     */
     const updateBalance = (value) => {
         setPayment(value);
         setRemaining(customer.balance - value);
@@ -89,8 +105,6 @@ export const MakePayment = ({ customer, onClose, toast }) => {
                     <MyButton text="Submit" update={makePayment}/>
                 </div>
             </div>
-
-            
         </div>
     )
 }

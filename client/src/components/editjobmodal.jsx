@@ -8,17 +8,27 @@ import { path } from "../path";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export const EditJobModal = ({ job, onClose, setGlobalDate }) => {
-    const [pickup, setPickup] = useState(job.pickup);
-    const [dropoff, setDropoff] = useState(job.dropoff);
-    const [crew, setCrew] = useState(job.num_crew);
-    const [trucks, setTrucks] = useState(job.num_trucks);
-    const [date, setDate] = useState(job.job_date.split('T')[0]);
-    const [notes, setNotes] = useState(job.notes);
-    const [estimate, setEstimate] = useState(job.estimate);
-    const [rate, setRate] = useState(job.rate);
+/**
+ * @description A pop up menu to let users edit a job
+ * 
+ * @param {*} job The job being edited
+ * @param {*} onClose Closes the job modal
+ * 
+ * @returns A pop up job edit menu
+ */
+export const EditJobModal = ({ job, onClose }) => {
+    const [pickup, setPickup] = useState(job.pickup); // The jobs pickup address
+    const [dropoff, setDropoff] = useState(job.dropoff); // The jobs dropoff address
+    const [crew, setCrew] = useState(job.num_crew); // The jobs number of crew
+    const [trucks, setTrucks] = useState(job.num_trucks); // The jobs number of trucks
+    const [date, setDate] = useState(job.job_date.split('T')[0]); // The jobs date
+    const [notes, setNotes] = useState(job.notes); // The jobs notes
+    const [estimate, setEstimate] = useState(job.estimate); // The jobs estimate/minimum
+    const [rate, setRate] = useState(job.rate); // The jobs rate
 
-
+    /**
+     * @description Calls the API and updates the given job
+     */
     const updateJob = async() => {
         const body = {
             pickup: pickup,
@@ -50,6 +60,9 @@ export const EditJobModal = ({ job, onClose, setGlobalDate }) => {
         }
     }
 
+    /**
+     * @description Calls the API and deletes the given job
+     */
     const deleteJob = async() => {
         const body = {
             id: job.job_id
@@ -71,7 +84,6 @@ export const EditJobModal = ({ job, onClose, setGlobalDate }) => {
         }
     }
     
-
     return (
         <div className="fixed top-0 left-[0%] w-full h-full z-50 bg-opacity-30 bg-black justify-center items-center flex">
             <div className="bg-background w-[70%] rounded-lg overflow-hidden">

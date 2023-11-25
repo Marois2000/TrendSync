@@ -10,14 +10,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-export const EditTruckModel = ({ truck, onClose }) => {
-    const [name, setName] = useState(truck.name);
-    const [model, setModel] = useState(truck.model);
-    const [length, setLength] = useState(truck.length);
-    const [active, setActive] = useState(truck.active);
+/**
+ * @description A pop up for editing trucks
+ * 
+ * @param {*} truck The truck being edited
+ * @param {*} onClose Closes the modal
+ *
+ * @returns A pop up modal
+ */
+export const EditTruckModal = ({ truck, onClose }) => {
+    const [name, setName] = useState(truck.name); // The trucks name
+    const [model, setModel] = useState(truck.model); // The trucks model
+    const [length, setLength] = useState(truck.length); // The trucks length
+    const [active, setActive] = useState(truck.active); // If the truck is operational or not
 
-
-    
+    /**
+     * @description Calls the API and updates the given truck
+     */
     const updateTruck = async() => {
         const body = {
             name: name,
@@ -54,8 +63,6 @@ export const EditTruckModel = ({ truck, onClose }) => {
         }
     }
 
-    
-
     return (
         <div className="fixed h-[85%] w-[99%] z-50 bg-opacity-30 bg-black justify-center items-center flex">
             <div className="bg-background w-[70%] rounded-lg overflow-hidden">
@@ -81,8 +88,6 @@ export const EditTruckModel = ({ truck, onClose }) => {
                         </div>
                     </div>
                 </div>
-
-               
 
                 <div className="flex justify-start w-full my-5 px-5">
                     <MyButton text="Update" update={updateTruck}/>

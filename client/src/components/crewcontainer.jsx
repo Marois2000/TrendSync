@@ -9,15 +9,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { EditCrewModel } from "./editcrewmodal";
 
+/**
+ * @description Contains all the crew available to go on jobs
+ * 
+ * @param {*} crews Array of crew objects that are not on a job
+ * @param {*} setCrew Sets the crew array
+ * @param {*} date The given date
+ * @param {*} schedule The current schedule
+ * @param {*} setSchedule Sets the current schedule
+ * @param {*} fullCrew Array of all crew even those on jobs
+ * @param {*} setFullCrew Sets the full crew
+ * 
+ * @returns A container that holds draggable crew memebers
+ */
 export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule, setFullCrew, fullCrew }) => {
-    const [editingCrew, setEditingCrew] = useState(false);
-    const [crewmodal, setCrewModal] = useState(false);
-    const [crewMemberBeingEdited, setCrewMemberBeingEdited] = useState({});
+    const [editingCrew, setEditingCrew] = useState(false); // Tells if we are currently editing crew or not
+    const [crewmodal, setCrewModal] = useState(false); // Tells if the edit crew modal should be open or not
+    const [crewMemberBeingEdited, setCrewMemberBeingEdited] = useState({}); // The current crew member that is being edited
 
     useEffect(() => {
         getCrewMembers();
     }, [date]);
 
+    /**
+     * @description Calls the API and gets the crew members
+     */
     const getCrewMembers = async() => {
         const body = {
             date: date
@@ -48,6 +64,11 @@ export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule, set
         })
     });
 
+    /**
+     * @description Handles an item being dropped in this container
+     * 
+     * @param {*} item The item being dropped
+     */
     const handleDrop = (item) => {
         let copyOfSlot = schedule[item.index];
         let crewList = copyOfSlot.crew;
@@ -69,11 +90,15 @@ export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule, set
         } 
     }
     
+    /**
+     * @description Sets the crew member being edited and opens the edit crew modal
+     * 
+     * @param {*} crewMember The crew member to be edited
+     */
     const openModal = (crewMember) => {
         setCrewMemberBeingEdited(crewMember);
         setCrewModal(true);
     }
-
 
     return(
         <>

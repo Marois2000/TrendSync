@@ -8,13 +8,29 @@ import { path } from "../path";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJobs, setTrucks, allAssets}) => {
+/**
+ * @description Shows the schedule for a given day
+ * 
+ * @param {*} date The given date
+ * @param {*} setDate Sets the date
+ * @param {*} schedule The given schedule
+ * @param {*} setSchedule Sets the schedule
+ * @param {*} setCrew Sets the crew if one is added to schedule
+ * @param {*} setJobs Sets the jobs if one is added to the schedule
+ * @param {*} setTrucks Sets the trucks if on is added to the schedule
+ * 
+ * @returns 
+ */
+export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJobs, setTrucks }) => {
 
     useEffect(() => {
         setSchedule([])
         getSchedule();
     }, [date]);
 
+    /**
+     * @description Calls the API and gets the schedule, if there isn't one then initialize a blank one
+     */
     const getSchedule = async() => {
         const body = {
             date: date
@@ -52,6 +68,9 @@ export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJob
         }
     }
 
+    /**
+     * @description Adds a timeslot to the schedule
+     */
     const addTimeSlot = () => {
         const copySchedule = [...schedule, {
             jobid: [],
@@ -61,7 +80,10 @@ export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJob
         setSchedule(copySchedule);
     }
 
-    const updateSchedule = async e => {
+    /**
+     * @description Calls the API and updates the schedule
+     */
+    const updateSchedule = async() => {
         const scheduleInput = {
             timeslots: schedule
         }
@@ -97,8 +119,6 @@ export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJob
         }
     }
 
-    
-
     return (
         <div className="flex flex-col justify-center items-center mx-5">
             <div className="flex justify-end items-center w-full">
@@ -118,7 +138,7 @@ export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJob
             <div className="flex flex-col rounded-b-lg h-[50vh] bg-grey-100 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-white gap-2 items-center w-full border-grey-100 border-4">
                 {schedule.map((timeslot, index) => {
                     return (
-                        <TimeSlot index={index} crew={timeslot.crew} trucks={timeslot.trucks} jobs={timeslot.jobid} schedule={schedule} setSchedule={setSchedule} setCrew={setCrew} setJobs={setJobs} setTrucks={setTrucks} allAssets={allAssets} />
+                        <TimeSlot index={index} crew={timeslot.crew} trucks={timeslot.trucks} jobs={timeslot.jobid} schedule={schedule} setSchedule={setSchedule} setCrew={setCrew} setJobs={setJobs} setTrucks={setTrucks} />
                     )
                 })}
             </div>

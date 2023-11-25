@@ -6,13 +6,28 @@ import { JobAsset } from "./jobasset";
 import { JobCard } from "./jobcard";
 import { useDrag, useDrop } from "react-dnd";
 
-export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule, setCrew, setTrucks, setJobs, allAssets}) => {
-    const [fullSlot, setFullSlot] = useState(false);
+/**
+ * @description A time slot in the schedule, holds crews, trucks, and jobs
+ * 
+ * @param {*} index The timeslots index in the schedule
+ * @param {*} crew Array of crew members in this slot
+ * @param {*} trucks The array of trucks in this slot
+ * @param {*} jobs The array of jobs in this slot
+ * @param {*} schedule The entire schedule
+ * @param {*} setSchedule Sets the entire schedule
+ * 
+ * @returns A container that holds crew members, trucks, and jobs that are all in a timeslot
+ */
+export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule }) => {
+    const [fullSlot, setFullSlot] = useState(false); // Determines whether or not the crew and trucks are sufficient for the jobs in the slot
 
     useEffect(() => {
         checkFull();
     }, [crew, trucks, jobs])
 
+    /**
+     * @description Checks if a slot is full
+     */
     const checkFull = () => {
         let totalCrewNeeded = 0;
         let totalTrucksNeeded = 0;
@@ -26,8 +41,6 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule, set
         } else {
             setFullSlot(false)
         }
-        
-        
     }
 
     const[{ isOver }, dropRef] = useDrop({
@@ -36,8 +49,13 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule, set
         collect: (monitor) => ({
             isOver: monitor.isOver()
         })
-    });
+    }); // Allows for dropping items
 
+    /**
+     * @description Drops an item into whichever container in the slot the item is meant for
+     * 
+     * @param {*} item The item being dropped
+     */
     const handleDrop = (item) => {
         let copyOfSlot = schedule[index];
         let updatedSchedule = [...schedule];
@@ -67,11 +85,13 @@ export const TimeSlot = ({ index, crew, trucks, jobs, schedule, setSchedule, set
         
         checkFull();
 
-
         updatedSchedule[index] = copyOfSlot;
         setSchedule(updatedSchedule);
     }
 
+    /**
+     * @description Deletes a slot from the schedule
+     */
     const removeSlot = () => {
         setSchedule(schedule.filter((slot) => slot != schedule[index]));
     }
