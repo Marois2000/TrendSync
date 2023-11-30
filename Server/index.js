@@ -2,11 +2,76 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+const fs = require('fs');
+const PDFDocument = require('pdfkit');
+
 const path = "localhost:5000";
 
 //MIDDLEWARE
 app.use(cors());
 app.use(express.json());
+
+function createMovingStorageContract(customer, id, signing) {
+    // Create a new PDF document
+    const doc = new PDFDocument();
+
+    // Set font
+    doc.font('Times-Roman');
+
+    // Add a title
+    doc.fillColor('#1B3F9C').fontSize(18).text('Trend Moving and Storage', { align: 'left' });
+
+
+    doc.fillColor('black').fontSize(12);
+    // Add service options, address, and hours
+    const businessAddress = '14 Liberty Dr, Londonderry, NH 03053';
+    const businessPhone = '(855) 509-6683';
+
+    doc.moveUp();
+    doc.text(`${businessAddress}`, {align: 'right'});
+    doc.text(`Phone: ${businessPhone}`, {align: 'right'});
+
+    // Move to a new line
+    doc.moveDown(2);
+
+
+    doc.fontSize(12).text(`Client Details:`);
+    doc.moveDown().text(`Name: ${customer.first_name + " " + customer.last_name}`);
+    doc.moveDown().text(`Email: ${customer.email}`);
+    doc.moveDown().text(`Phone: ${customer.phone}`);
+
+    
+    // Add terms and conditions for after the move
+    const postMoveTerms = [
+        'Upon completion of the move, the client shall inspect all delivered items for damages or missing items.',
+        'Any damages or discrepancies must be reported to Trend Moving and Storage within 24 hours of delivery.',
+        'Trend Moving and Storage is not responsible for damages to items packed by the client unless gross negligence is proven.',
+        'Any outstanding payments must be settled within 7 days of the move completion date.',
+        'The client is responsible for notifying Trend Moving and Storage of any changes in contact information.',
+        'Any disputes arising from this contract will be resolved through arbitration.',
+        'The terms of this contract may be subject to change with prior written notice from Trend Moving and Storage.',
+        'This contract is binding upon both parties and their respective successors and assigns.',
+    ];
+
+    doc.moveDown(3).fontSize(12).text('Terms and Conditions:');
+
+    postMoveTerms.forEach((condition) => {
+        doc.text(`- ${condition}`);
+    });
+
+    // Add a signature field
+    doc.moveDown(2).text('Client Signature:');
+    if(signing) {
+        doc.moveDown(1).rect(doc.x, doc.y - 10, 300, 50).fontSize(18).text(customer.first_name + " " + customer.last_name).lineWidth(1).stroke();
+    } else {
+        doc.moveDown(1).rect(doc.x, doc.y - 10, 300, 50).lineWidth(1).stroke();
+    }
+    
+    
+    // Save the PDF to a file
+    doc.pipe(fs.createWriteStream(`./contracts/${id}.pdf`));
+    doc.end();
+}
 
 
 /**
@@ -90,9 +155,13 @@ app.post('/trendsync/adduser', async(req, res) => {
  */
 app.post('/trendsync/addjob', async(req, res) => { 
     try {
-        const { customerId, pickup, dropoff, crew, trucks, date, notes, estimate, rate } = req.body;
+        const { customerId, pickup, dropoff, crew, trucks, date, notes, estimate, rate, customer } = req.body;
         const query = await pool.query('INSERT INTO job (customer_id, pickup, dropoff, job_date, notes, estimate, rate, num_crew, num_trucks) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;',
         [customerId, pickup, dropoff, date, notes, estimate, rate, crew, trucks]);
+
+        const jobId = query.rows[0];
+        createMovingStorageContract(customer, jobId.job_id, false);
+        await pool.query('UPDATE job SET pdf=$1 WHERE job_id=$2;', ["./contracts/" + jobId.job_id + ".pdf", jobId.job_id]);
 
         res.json(query.rows);
     } catch (error) {
@@ -617,6 +686,7 @@ app.put('/trendsync/startjob', async(req, res) => {
         const query = await pool.query('UPDATE job SET start_time=$1 WHERE job_id=$2;', [time, id]);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -629,6 +699,7 @@ app.put('/trendsync/endjob', async(req, res) => {
         const query = await pool.query('UPDATE job SET end_time=$1 WHERE job_id=$2;', [time, id]);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -676,12 +747,14 @@ app.put('/trendsync/jobtotal', async(req, res) => {
         }
 
         total += materialCost + serviceCost;
+        console.log(Math.floor(total));
 
-        const totalQuery = await pool.query('UPDATE job SET price=$1 WHERE job_id=$2;', [total, id]);
+        const totalQuery = await pool.query('UPDATE job SET price=$1 WHERE job_id=$2;', [Math.floor(total), id]);
 
-        res.json(total);
+        res.json(Math.floor(total));
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
     }
 });
 
@@ -697,6 +770,37 @@ app.put('/trendsync/finishjob', async(req, res) => {
         res.json("OK");
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+/**
+ * Send contract
+ */
+app.get('/trendsync/sendcontract/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(`Received request for file: ./contracts/${id}.pdf`);
+        res.download(`./contracts/${id}.pdf`);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+/**
+ * Sign contract
+ */
+app.post('/trendsync/signcontract', async (req, res) => {
+    try {
+        const { id, customer } = req.body;
+        console.log(`Received request for file to sign: ./contracts/${id}.pdf`);
+        createMovingStorageContract(customer, id, true);
+        
+        res.json("OK");
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
     }
 });
 

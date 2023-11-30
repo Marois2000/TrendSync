@@ -9,8 +9,8 @@ import { Keyboard, KeyboardAvoidingView } from 'react-native';
 import Toast from 'react-native-root-toast';
 
 export default CompleteJob = ({ close, job, toast }) => {
-    const [total, setTotal] = useState(0);
-    const [payment, setPayment] = useState(0);
+    const [total, setTotal] = useState(0.0);
+    const [payment, setPayment] = useState(0.0);
     const [balance, setBalance] = useState(total - payment);
 
     useEffect(() => {
@@ -40,11 +40,21 @@ export default CompleteJob = ({ close, job, toast }) => {
     }
 
     const changeBalance = (num) => {
+        
+        if(num < 0) {
+            num = 0;
+        } else if(num > total) {
+            num = total;
+        } 
+
         if(isNaN(total - parseInt(num))) {
             setBalance(total);
         } else {
             setBalance(total - parseInt(num));
         }
+
+        
+        console.log(num)
         setPayment(parseInt(num));
     }
 

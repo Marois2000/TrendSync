@@ -86,7 +86,8 @@ export const AddJob = () => {
             date: date,
             notes: notes,
             estimate: estimate,
-            rate: rate
+            rate: rate,
+            customer: customer
         }
 
         try {

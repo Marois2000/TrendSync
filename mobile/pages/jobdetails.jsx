@@ -2,10 +2,8 @@
  * @author Tyler Marois
  */
 import { StyledView, StyledText, StyledScroll, StyledOpacity } from '../StyleWrappers';
-import Button from '../components/button';
 import { useEffect, useState } from 'react';
 import path from "../path";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Customerinfo from '../components/customerinfo';
 import Addresses from '../components/addresses';
 import { Dimensions } from 'react-native';
@@ -18,7 +16,8 @@ import ServiceEdit from './serviceedit';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Toast from 'react-native-root-toast';
 import CompleteJob from "./completejob";
-
+import { AntDesign } from '@expo/vector-icons';
+import { PDF } from "../components/pdf.jsx";
 
 
 export default JobDetails = ({ backToDash, job, customer, user }) => {
@@ -30,6 +29,8 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
     const [settingStart, setSettingStart] = useState(false);
     const [settingEnd, setSettingEnd] = useState(false);
     const [completingJob, setCompletingJob] = useState(false);
+
+    const [openPDF, setOpenPDF] = useState(false);
 
     
     useEffect(() => {
@@ -80,8 +81,6 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
             time: time
         }
         
-
-
         job.end_time = time;
 
         try {
@@ -105,10 +104,23 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
         }
     }
 
+    const unlockScreen = (signed) => {
+        if(signed) {
+            Toast.show('Contract Signed!', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.TOP,
+                backgroundColor: '#4BB543',
+                opacity: 90,
+            });
+        } 
+        setOpenPDF(false);
+    }
+
     return(
         <StyledView classes={["flex:1", "justify:start", "items:center", "bg:background", "w:full"]}>
-            <StyledView classes={["justify:start", "items:end", "bg:background", "w:full", "flex:row", "pb:2", "mt:10"]}>
+            <StyledView classes={["justify:between", "items:end", "bg:background", "w:full", "flex:row", "pb:2", "mt:10"]}>
                 <StyledOpacity onPress={backToDash}><StyledText classes={["color:primary", "text:2xl", "mx:2"]}>{"< Back"}</StyledText></StyledOpacity>
+                <StyledOpacity onPress={() => setOpenPDF(true)} classes={["px:3"]}><AntDesign name="pdffile1" size={24} color="#1B3F9C" /></StyledOpacity>
             </StyledView>
 
 
@@ -196,6 +208,7 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
             {openMaterials ? <MaterialEdit close={() => setOpenMaterials(false)} job={job} user={user}/> : null}
             {openServices ? <ServiceEdit close={() => setOpenServices(false)} job={job} user={user}/> : null}
             {completingJob ? <CompleteJob close={() => setCompletingJob(false)} job={job} user={user} toast={Toast}/> : null}
+            {openPDF ? <PDF unlockScreen={unlockScreen} job={job} customer={customer} /> : null}
 
 
             <DateTimePickerModal
