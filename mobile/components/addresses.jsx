@@ -1,12 +1,25 @@
 /**
  * @author Tyler Marois
  */
-import { StyledView, StyledText, StyledScroll, StyledOpacity } from '../StyleWrappers';
-import { Linking, Platform } from 'react-native'
+import { StyledView, StyledText, StyledOpacity } from '../StyleWrappers';
+import { Linking, Platform } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
+/**
+ * @description Shows the addresses of the job
+ * 
+ * @param {*} pickup The address the job picks up from
+ * @param {*} dropoff The address of the jobs dropoff
+ * 
+ * @returns A card showing 2 addresses for the job
+ */
 export default Addresses = ({ pickup, dropoff}) => {
 
+    /**
+     * @description Opens the devices default native map viewer
+     * 
+     * @param {*} address The address to look up
+     */
     const openMaps = (address) => {
         if(Platform.OS == 'android') {
             Linking.openURL(`geo://0,0?q=${address}`);
@@ -30,8 +43,6 @@ export default Addresses = ({ pickup, dropoff}) => {
                     <StyledText classes={["color:primary", "my:2", "text-align:left", "w:[70%]"]}>{dropoff}</StyledText>
                 </StyledOpacity>
             </StyledView>
-
-
         </StyledView>
     )
 }

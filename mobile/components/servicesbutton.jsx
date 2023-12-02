@@ -4,6 +4,13 @@
 import { StyledView, StyledText, StyledOpacity } from '../StyleWrappers';
 import { MaterialIcons } from '@expo/vector-icons';
 
+/**
+ * @description Opens the jobs services page
+ * 
+ * @param {*} openServices Sets the flag to open the services
+ * 
+ * @returns A card containing a button to open the services modal
+ */
 export default ServicesButton = ({ openServices }) => {
     return (
         <StyledView classes={["bg:primary2", "w:[80%]", 'justify:between', "items:center", "flex:row", "p:3", "rounded:md", "mb:10"]}>

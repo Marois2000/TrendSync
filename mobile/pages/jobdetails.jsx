@@ -19,18 +19,27 @@ import CompleteJob from "./completejob";
 import { AntDesign } from '@expo/vector-icons';
 import { PDF } from "../components/pdf.jsx";
 
-
+/**
+ * @description The jobs details/working page
+ * 
+ * @param {*} backToDash Closes the details page
+ * @param {*} job The current job
+ * @param {*} customer The jobs customer
+ * @param {*} user The logged in user
+ * 
+ * @returns A job details page
+ */
 export default JobDetails = ({ backToDash, job, customer, user }) => {
-    const [landscape, setLandscape] = useState( Dimensions.get('window').width > Dimensions.get('window').height);
-    const [extras, setExtras] = useState(false);
-    const [openMaterials, setOpenMaterials] = useState(false);
-    const [openServices, setOpenServices] = useState(false);
+    const [landscape, setLandscape] = useState( Dimensions.get('window').width > Dimensions.get('window').height); // Determines if in landscape or not
+    const [extras, setExtras] = useState(false); // Determines if extra details are open or not
+    const [openMaterials, setOpenMaterials] = useState(false); // Determines if materials page is open
+    const [openServices, setOpenServices] = useState(false); // Determines if the services page is open
 
-    const [settingStart, setSettingStart] = useState(false);
-    const [settingEnd, setSettingEnd] = useState(false);
-    const [completingJob, setCompletingJob] = useState(false);
+    const [settingStart, setSettingStart] = useState(false); // Determines if start has been set
+    const [settingEnd, setSettingEnd] = useState(false); // Determines if end has been set
+    const [completingJob, setCompletingJob] = useState(false); // Determines if completing job has been set
 
-    const [openPDF, setOpenPDF] = useState(false);
+    const [openPDF, setOpenPDF] = useState(false); // Determines if viewing the contract
 
     
     useEffect(() => {
@@ -46,6 +55,11 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
         return () => subscription?.remove();
     });
 
+    /**
+     * @description Call API and set jobs start time
+     * 
+     * @param {*} time The time to set
+     */
     const handleStartTime = async (time) => {
         const body = {
             id: job.job_id,
@@ -75,6 +89,11 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
         }
     }
 
+    /**
+     * @description Calls the API and sets the jobs end time
+     *  
+     * @param {*} time The time to set
+     */
     const handleEndTime = async (time) => {
         const body = {
             id: job.job_id,
@@ -104,6 +123,11 @@ export default JobDetails = ({ backToDash, job, customer, user }) => {
         }
     }
 
+    /**
+     * @description Closes the contract viewer
+     * 
+     * @param {*} signed If true the contract will be signed
+     */
     const unlockScreen = (signed) => {
         if(signed) {
             Toast.show('Contract Signed!', {

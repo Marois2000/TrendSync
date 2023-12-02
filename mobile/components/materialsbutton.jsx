@@ -4,6 +4,13 @@
 import { StyledView, StyledText, StyledOpacity } from '../StyleWrappers';
 import { Feather } from '@expo/vector-icons';
 
+/**
+ * @description Opens the jobs materials page
+ * 
+ * @param {*} openMaterials Sets the flag to open the materials
+ * 
+ * @returns A card containing a button to open the materials modal
+ */
 export default MaterialsButton = ({ openMaterials }) => {
     return (
         <StyledView classes={["bg:primary2", "w:[80%]", 'justify:between', "items:center", "flex:row", "p:3", "rounded:md", "m:3"]}>

@@ -10,7 +10,8 @@ import React from "react";
  * @param {*} setCustomer Sets the current customer
  * @param {*} changeSearch Sets the search to the selected customer to fill in search bar
  * @param {*} setSearching Sets the searching to close/open the dropbox 
- * @returns 
+ * 
+ * @returns A card of a customers name
  */
 export const CustomerItem = ({ customer, setCustomer, changeSearch, setSearching}) => {
 

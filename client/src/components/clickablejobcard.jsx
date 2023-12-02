@@ -11,6 +11,7 @@ import { path } from "../path";
  * @param {*} trucks The jobs truck count
  * @param {*} customerId ID of the customer this job belongs to
  * @param {*} update The function passed to the button to do something
+ * 
  * @returns A clickable job card for editing jobs
  */
 export const ClickableJobCard = ({ crew, trucks, customerId, update }) => {

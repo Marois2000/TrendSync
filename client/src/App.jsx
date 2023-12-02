@@ -8,8 +8,8 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
-  const [login, setLogin] = useState(false);
-  const [user, setUser] = useState({});
+  const [login, setLogin] = useState(false); // If the user is logged in or not
+  const [user, setUser] = useState({}); // The users login info
   
 
   return (

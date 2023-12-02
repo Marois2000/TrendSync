@@ -16,19 +16,19 @@ import { AddCustomerModal } from "../components/addcustomermodal";
  * @returns The add job form for adding jobs into the database and an add customer modal for adding customers
  */
 export const AddJob = () => {
-    const [customer, setCustomer] = useState({});
-    const [customers, setCustomers] = useState([]);
+    const [customer, setCustomer] = useState({}); // The customer for the job
+    const [customers, setCustomers] = useState([]); // List of customers to sort through and choose
 
-    const [pickup, setPickup] = useState("");
-    const [dropoff, setDropoff] = useState("");
-    const [crew, setCrew] = useState(0);
-    const [trucks, setTrucks] = useState(0);
-    const [date, setDate] = useState("");
-    const [notes, setNotes] = useState("");
-    const [estimate, setEstimate] = useState(0);
-    const [rate, setRate] = useState(0);
+    const [pickup, setPickup] = useState(""); // The pickup address
+    const [dropoff, setDropoff] = useState(""); // The dropoff address
+    const [crew, setCrew] = useState(0); // The amount of crew required for the job
+    const [trucks, setTrucks] = useState(0); // The amount of trucks required for the job
+    const [date, setDate] = useState(""); // What day the job will take place
+    const [notes, setNotes] = useState(""); // Notes for the crew about the job
+    const [estimate, setEstimate] = useState(0); // The estimate/minimum for this job
+    const [rate, setRate] = useState(0); // How much this job costs per hour
 
-    const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false); // Determines if the add customer modal should be open or not
 
 
     /**
@@ -129,8 +129,6 @@ export const AddJob = () => {
             console.log(error.message);
         }
     }
-
-      
 
     return (
         <div className="flex flex-col items-center justify-evenly space-y-1 bg-background">

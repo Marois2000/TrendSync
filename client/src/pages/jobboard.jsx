@@ -7,22 +7,27 @@ import { TruckContainer } from "../components/TruckContainer";
 import { Schedule } from "../components/schedule";
 import { JobContainer } from "../components/jobcontainer";
 
+/**
+ * @description The job board page where admins can see Crew, trucks, and jobs on a given day as well as set schedules
+ * 
+ * @returns A scheduling page with drag and drop
+ */
 export const JobBoard = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    const stringDate = year + "-" + month + "-" + day;
+    const today = new Date(); // Todays date
+    const year = today.getFullYear(); // Get the dates year
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Get the dates month and pad start with a 0 if necessary
+    const day = String(today.getDate()).padStart(2, '0'); // Get the date and pad start with a 0 if necessary
+    const stringDate = year + "-" + month + "-" + day; // Turn all those into one string of the date in html date format
 
-    const [date, setDate] = useState(stringDate);
-    const [crews, setCrew] = useState([]);
-    const [trucks, setTrucks] = useState([]);
-    const [jobs, setJobs] = useState([]);
-    const [schedule, setSchedule] = useState([]);
+    const [date, setDate] = useState(stringDate); // The current date in html required format
+    const [crews, setCrew] = useState([]); // All the users/crew members not on a job
+    const [trucks, setTrucks] = useState([]); // All trucks not on a job
+    const [jobs, setJobs] = useState([]); // All jobs not in the schedule
+    const [schedule, setSchedule] = useState([]); // Schedule containing timeslots that tell who is on what job and in which truck
 
-    const [fullCrew, setFullCrew] = useState([]);
-    const [fullTrucks, setFullTrucks] = useState([]);
-    const [fullJobs, setFullJobs] = useState([]);
+    const [fullCrew, setFullCrew] = useState([]); // All the users/crew members 
+    const [fullTrucks, setFullTrucks] = useState([]); // All the trucks
+    const [fullJobs, setFullJobs] = useState([]); // All the jobs
 
 
     useEffect(() => {
@@ -33,6 +38,9 @@ export const JobBoard = () => {
     }, [schedule]);
 
     
+    /**
+     * @description Filters the crew once the schedule gets updated
+     */
     const filterCrew = () => {
         const everyone = fullCrew;
         let usersOnSchedule = [];
@@ -53,6 +61,9 @@ export const JobBoard = () => {
         setCrew(usersNotOnSchedule);
     }
 
+    /**
+     * @description Sets the trucks once the schedule gets updated
+     */
     const filterTrucks = () => {
         const allTrucks = fullTrucks
         let trucksOnSchedule = [];
@@ -72,6 +83,9 @@ export const JobBoard = () => {
         setTrucks(trucksNotOnSchedule);
     }
 
+    /**
+     * @description Sets the jobs once the schedule gets updated
+     */
     const filterJobs = () => {
         const allJobs = fullJobs;
         let jobsOnSchedule = [];
@@ -90,7 +104,6 @@ export const JobBoard = () => {
 
         setJobs(jobsNotOnSchedule);
     }
-
 
     return (
         <div className="flex w-full">

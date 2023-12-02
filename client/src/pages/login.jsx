@@ -18,9 +18,9 @@ import { CookiesProvider, useCookies } from "react-cookie";
  * @returns html to display the login page
  */
 export const Login = ( {loginSetter, userSetter} ) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [cookies, setCookie] = useCookies(['user']);
+    const [email, setEmail] = useState(""); // The users email
+    const [password, setPassword] = useState(""); // The users password
+    const [cookies, setCookie] = useCookies(['user']); // The cookie used to keep the user logged in
 
     useEffect(() => {
         if(cookies.user) {

@@ -10,16 +10,21 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { EditCustomer } from "../components/editcustomer";
 
+/**
+ * @description Allows for viewing customers and editing them as well as to update their balance
+ * 
+ * @returns A list of all the customers
+ */
 export const ViewCustomers = () => {
-    const [customers, setCustomers] = useState([]);
-    const [search, setSearch] = useState("");
-    const [filteredCustomers, setFilteredCustomers] = useState([]);
-    const [az, setAZ] = useState(true);
-    const [leastToGreat, setLeastToGreat] = useState(true);
-    const [sortAlphabetically, setSortAlphabetically] = useState();
-    const [makingPayment, setMakingPayment] = useState(false);
-    const [editing, setEditing] = useState(false);
-    const [focusCustomer, setFocusCustomer] = useState({});
+    const [customers, setCustomers] = useState([]); // All the customers in the database
+    const [search, setSearch] = useState(""); // The current search term
+    const [filteredCustomers, setFilteredCustomers] = useState([]); // Customers that contain the search term
+    const [az, setAZ] = useState(true); // Determines if sorting by A-Z
+    const [leastToGreat, setLeastToGreat] = useState(true); // Determines if sorting least to greatest
+    const [sortAlphabetically, setSortAlphabetically] = useState(); // determines if we are sorting by name or by balance
+    const [makingPayment, setMakingPayment] = useState(false); // Determines if payment modal is open
+    const [editing, setEditing] = useState(false); // Determines if editing modal is open
+    const [focusCustomer, setFocusCustomer] = useState({}); // The customer being edited or collecting payment from
 
     useEffect(() => {
         getCustomers();
@@ -33,6 +38,9 @@ export const ViewCustomers = () => {
         getCustomers();
     }, [makingPayment, editing])
 
+    /**
+     * @description Calls the API and gets all the customers
+     */
     const getCustomers = async() => {
         try {
             const req = await fetch(path + "/trendsync/customers", {
@@ -57,6 +65,11 @@ export const ViewCustomers = () => {
         setFilteredCustomers(customers.filter(customer => customer.first_name.toLowerCase().includes(search.toLowerCase()) || customer.last_name.toLowerCase().includes(search.toLowerCase())));
     }
 
+    /**
+     * @description Sorts the list based off current state and input value
+     * 
+     * @param {*} sortingBy Determines what we are sorting by 0 for alpha and 1 for numerical
+     */
     const sortList = (sortingBy) => {
         switch (sortingBy) {
             case 0:
@@ -88,6 +101,12 @@ export const ViewCustomers = () => {
         }
     }
 
+    /**
+     * @description Sets the focus customer then opens the specified modal
+     * 
+     * @param {*} customer The customer to focus on
+     * @param {*} edit If this is for the edit modal or payment modal
+     */
     const openModal = (customer, edit) => {
         setFocusCustomer(customer)
         if(edit) {

@@ -5,6 +5,16 @@ import { StyledView, StyledText } from '../StyleWrappers';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
+/**
+ * @description Shows the details about the job
+ * 
+ * @param {*} rate The cost of the job per hour
+ * @param {*} crewNum How many crew the job needs
+ * @param {*} truckNum How many trucks the job needs
+ * @param {*} estimate The minimum/estimate of the job
+ * 
+ * @returns A card showing the job details
+ */
 export default JobSpecs = ({ rate, crewNum, truckNum, estimate }) => {
     return (
         <StyledView classes={["bg:primary2", "w:[80%]", 'justify:start', "items:center", "my:2", "rounded:md"]}>

@@ -1,15 +1,36 @@
 /**
  * @author Tyler Marois
  */
-import { StyledView, StyledText, StyledScroll, StyledOpacity } from '../StyleWrappers';
-import { Linking, Platform } from 'react-native'
+import { StyledView, StyledText, StyledOpacity } from '../StyleWrappers';
+import { Linking, Platform } from 'react-native';
 
+/**
+ * @description Shows the customers details like name, phone, and email
+ * 
+ * @param {*} first The customers first name
+ * @param {*} last The customers last name
+ * @param {*} phone The customers phone number
+ * @param {*} email The customers email address
+ * 
+ * @returns A customer details card
+ */
 export default CustomerInfo = ({ first, last, phone, email }) => {
 
+    /**
+     * Capitalizes the first letter of a string
+     * 
+     * @param {*} string The string to be capitalized
+     * @returns A string with a capitalized first letter
+     */
     const capFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    /**
+     * @description Opens the devices default native phone application to make a call
+     * 
+     * @param {*} number The customers phone number
+     */
     const onPressMobileNumberClick = (number) => {
         console.log(number);
         let phoneNumber = '';

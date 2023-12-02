@@ -5,10 +5,21 @@ import { StyledView, StyledText, StyledOpacity } from '../StyleWrappers';
 import path from "../path";
 import { FontAwesome } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
-import Toast from 'react-native-root-toast';
 
-export const PDF = ({ unlockScreen, job, customer, toast }) => {
+/**
+ * @description Shows the jobs contract
+ * 
+ * @param {*} unlockScreen Closes the pdf when set to false
+ * @param {*} job What job it is
+ * @param {*} customer The customer for this job
+ *  
+ * @returns A pop up that shows a pdf right in the app
+ */
+export const PDF = ({ unlockScreen, job, customer }) => {
     
+    /**
+     * @description Calls the API and tells it to sign the customers name on the pdf
+     */
     const signContract = async() => {
         const body = {
             customer: customer,
@@ -32,6 +43,7 @@ export const PDF = ({ unlockScreen, job, customer, toast }) => {
             console.log(error.message);
         }
     }
+    
     return (
         <StyledView classes={["flex:1", "items:center", "mt:[25]", "absolute", "bg:background", "w:full", "h:full"]}>
             <StyledView classes={["w:full", "justify:center", "items:end", "bg:background", "py:3", "px:10", "flex:row"]}>
