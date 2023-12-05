@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { JobAsset } from "./jobasset";
 import { JobCard } from "./jobcard";
-import { useDrag, useDrop } from "react-dnd";
+import { useDrop } from "react-dnd";
 
 /**
  * @description A time slot in the schedule, holds crews, trucks, and jobs

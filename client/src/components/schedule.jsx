@@ -19,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
  * @param {*} setJobs Sets the jobs if one is added to the schedule
  * @param {*} setTrucks Sets the trucks if on is added to the schedule
  * 
- * @returns 
+ * @returns A schedule card with timeslots for rows
  */
 export const Schedule = ({ date, setDate, schedule, setSchedule, setCrew, setJobs, setTrucks }) => {
 

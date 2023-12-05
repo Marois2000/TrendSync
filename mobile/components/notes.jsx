@@ -4,7 +4,13 @@
 import { StyledView, StyledText } from '../StyleWrappers';
 import { MaterialIcons } from '@expo/vector-icons';
 
-
+/**
+ * @description Shows the jobs notes for the crew
+ * 
+ * @param {*} notes The actual notes
+ * 
+ * @returns A card displaying the notes
+ */
 export default Notes = ({ notes }) => {
     return(
         <StyledView classes={["my:3", "rounded:lg", "shadow:2xl", "w:[80%]"]}>

@@ -10,7 +10,8 @@ import { CustomerItem } from "./customeritem";
  * @param {*} customer The current customer
  * @param {*} customers List of all the customers
  * @param {*} setCustomer Sets the current customer
- * @returns 
+ * 
+ * @returns A list of customers that can be filtered
  */
 export const CustomerFilterList = ({ customers, customer, setCustomer}) => {
     const [search, setSearch] = useState("");

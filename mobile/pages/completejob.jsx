@@ -1,22 +1,33 @@
 /**
  * @author Tyler Marois
  */
-import { StyledView, StyledText, StyledScroll, StyledOpacity, StyledTextInput } from '../StyleWrappers';
-import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
-import * as ScreenOrientation from 'expo-screen-orientation';
+import { StyledView, StyledText, StyledTextInput } from '../StyleWrappers';
+import { FontAwesome } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView } from 'react-native';
 import Toast from 'react-native-root-toast';
 
+/**
+ * @description Ends the job and takes payment or updates customers balance
+ * 
+ * @param {*} close closes the page when set to false
+ * @param {*} job The current job
+ * @param {*} toast The pop up message
+ * 
+ * @returns A page showing the jobs total and takes payment
+ */
 export default CompleteJob = ({ close, job, toast }) => {
-    const [total, setTotal] = useState(0.0);
-    const [payment, setPayment] = useState(0.0);
-    const [balance, setBalance] = useState(total - payment);
+    const [total, setTotal] = useState(0.0); // The total of the job
+    const [payment, setPayment] = useState(0.0); // The current payment being made
+    const [balance, setBalance] = useState(total - payment); // The remaineder of the total - the payment
 
     useEffect(() => {
         getTotal();
     }, [])
 
+    /**
+     * @description Gets the jobs total from the API call
+     */
     const getTotal = async () => {
         const body = {
             id: job.job_id,
@@ -39,6 +50,11 @@ export default CompleteJob = ({ close, job, toast }) => {
         }
     }
 
+    /**
+     * @description Changes the balance when the payment changes
+     * 
+     * @param {*} num The new payment
+     */
     const changeBalance = (num) => {
         
         if(num < 0) {
@@ -53,15 +69,19 @@ export default CompleteJob = ({ close, job, toast }) => {
             setBalance(total - parseInt(num));
         }
 
-        
-        console.log(num)
         setPayment(parseInt(num));
     }
 
+    /**
+     * @description Close the keyboard when clicked away
+     */
     const getRidOfKeyboard = () => {
         Keyboard.dismiss();
     }
 
+    /**
+     * @description Sets the job as finished by calling the API
+     */
     const finishJob = async() => {
         const body = {
             customerId: job.customer_id,
@@ -77,7 +97,6 @@ export default CompleteJob = ({ close, job, toast }) => {
                 },
                 body: JSON.stringify(body)
             });
-            const res = await req.json();
 
             toast.show('Job Completed!', {
                 duration: Toast.durations.SHORT,

@@ -20,10 +20,10 @@ export const AddUser = () => {
     const [password, setPassword] = useState(""); // The users password
     const [rank, setRank] = useState(0); // The users rank
 
-    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    const capitalLetterRegex = /[A-Z]/;
-    const numberRegex = /[0-9]/;
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; //Regex to check for special characters
+    const capitalLetterRegex = /[A-Z]/; // Regex to check for capital letters
+    const numberRegex = /[0-9]/; // Regex to check for numbers
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Regex to ensure a valid email
 
 
     /**
@@ -65,6 +65,9 @@ export const AddUser = () => {
         }
     }
 
+    /**
+     * @description Checks if the users email and password are valid inputs
+     */
     const checkValidInputs = () => {
         if(password.length >= 12 && specialCharRegex.test(password) && capitalLetterRegex.test(password) && numberRegex.test(password)) {
             if(emailRegex.test(email)) {

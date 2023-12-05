@@ -10,11 +10,20 @@ import { KeyboardAvoidingView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-root-toast';
 
+/**
+ * @description The login page
+ * 
+ * @param {*} setUser Sets the logged in user
+ * 
+ * @returns A login page to log users in
+ */
 export default LogIn = ({ setUser }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState(""); // The users email address
+    const [password, setPassword] = useState(""); // The users password
 
-
+    /**
+     * @description Calls the API and gets users info if credentials are correct
+     */
     const login = async() => {
         const body = {
             email: email.toLowerCase(),
@@ -49,6 +58,11 @@ export default LogIn = ({ setUser }) => {
         }
     }
 
+    /**
+     * @description Store the users info to keep them logged in like cookies
+     * 
+     * @param {*} user The user to be kept logged in
+     */
     const storeUserInStorage = async user => {
         const now = new Date();
         now.setMinutes(now.getMinutes() + 720); 

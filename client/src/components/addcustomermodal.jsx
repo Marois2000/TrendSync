@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { InputField } from "./inputfield";
 import { MyButton } from "./mybutton";
 import { path } from "../path";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -17,6 +17,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
  * @param {*} onClose The function to close the modal
  * @param {*} setCustomer Sets the customers state
  * @param {*} updateCustomers Updates the list of customers
+ * 
  * @returns HTML for a popup modal
  */
 export const AddCustomerModal = ({ isOpen, onClose, setCustomer, updateCustomers }) => {

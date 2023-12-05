@@ -8,24 +8,39 @@ import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import Toast from 'react-native-root-toast';
 
+/**
+ * @description Lets users edit services for a job
+ * 
+ * @param {*} close Closes the page when set to false
+ * @param {*} job The current job
+ * @param {*} user The current user
+ * 
+ * @returns The service edit page
+ */
 export default ServiceEdit = ({ close, job, user }) => {
-    const [unusedServices, setUnusedServices] = useState([]);
-    const [usedServices, setUsedServices] = useState([]);
-    const [total, setTotal] = useState(0.00);
+    const [unusedServices, setUnusedServices] = useState([]); // All the unused services
+    const [usedServices, setUsedServices] = useState([]); // The services in use
+    const [total, setTotal] = useState(0.00); // price of all the services
 
 
     useEffect(() => {
         calculateTotal();
-    }, [usedServices])
+    }, [usedServices]);
 
     useEffect(() => {
         changeScreenOrientation();
-    })
+    });
 
+    /**
+     * @description Lock the screen to landscape
+     */
     async function changeScreenOrientation() {
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
     }
 
+    /**
+     * @description Unlock the screens orientation
+     */
     async function unlockScreen() {
         ScreenOrientation.unlockAsync();
         close();
@@ -36,6 +51,9 @@ export default ServiceEdit = ({ close, job, user }) => {
         getServicesUsed();
     }, []);
 
+    /**
+     * @description Get all possible services
+     */
     const getServices = async() => {
 
         const body = {
@@ -59,6 +77,9 @@ export default ServiceEdit = ({ close, job, user }) => {
         }
     }
 
+    /**
+     * @description The services the job is already using
+     */
     const getServicesUsed = async() => {
         const body = {
             jobId: job.job_id
@@ -81,6 +102,11 @@ export default ServiceEdit = ({ close, job, user }) => {
         }
     }
 
+    /**
+     * @description Add a service to the in use services
+     * 
+     * @param {*} service The service to be added
+     */
     const addServiceToUsed = (service) => {
         const newService = {
             job_id: job.job_id,
@@ -94,6 +120,14 @@ export default ServiceEdit = ({ close, job, user }) => {
         setUsedServices([... usedServices, newService]);
     }
 
+    /**
+     * @description Updates a services quantity on a job
+     * 
+     * @param {*} value the value to set quantity to
+     * @param {*} index Index in the service array
+     * @param {*} stepping If we are increasing with buttons
+     * @param {*} stepper The value to step by
+     */
     const setServiceQuantity = (value, index, stepping, stepper) => {
         const services = usedServices;
         if(isNaN(value)) {
@@ -111,6 +145,11 @@ export default ServiceEdit = ({ close, job, user }) => {
         setUsedServices([... services]);
     }
 
+    /**
+     * @description Removes a service from the in use array
+     * 
+     * @param {*} service The service to be removed
+     */
     const removeFromUsedServices = (service) => {
         const newService = {
             service_id: service.service_id,
@@ -122,6 +161,9 @@ export default ServiceEdit = ({ close, job, user }) => {
         setUnusedServices([...unusedServices, newService]);
     }
 
+    /**
+     * @description The total of all the services added up
+     */
     const calculateTotal = () => {
         let cost = 0.00;
         usedServices.forEach(service => {
@@ -138,6 +180,9 @@ export default ServiceEdit = ({ close, job, user }) => {
         setTotal(formattedDollarAmount);
     }
 
+    /**
+     * @description Call the API and set the jobs new services
+     */
     const updateServices = async() => {
 
         let services = [];

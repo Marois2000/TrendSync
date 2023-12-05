@@ -2,19 +2,29 @@
  * @author Tyler Marois
  */
 import { StyledView, StyledText, StyledOpacity } from '../StyleWrappers';
-import Inputfield from '../components/inputfield';
-import Button from '../components/button';
 import { useEffect, useState } from 'react';
 import path from "../path";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+/**
+ * @description A card showing job and a few details
+ * 
+ * @param {*} job The data about the job
+ * @param {*} crew The crew on the job
+ * @param {*} trucks The trucks on the job
+ * @param {*} setJob Sets the job for the parents state
+ * 
+ * @returns A job card with some details
+ */
 export default JobCard = ({ job, crew, trucks, setJob}) => {
-    const [title, setTitle] = useState("");
+    const [title, setTitle] = useState(""); // The jobs title/customer name
 
     useEffect(() => {
         getTitle();
     }, []);
 
+    /**
+     * @description Gets the jobs title based off the customer ID from the API
+     */
     const getTitle = async() => {
         const body = {
             id: job.customer_id

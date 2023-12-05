@@ -16,12 +16,12 @@ import { ViewCustomers } from "./viewcustomers";
  * @returns html of all the different pages and components
  */
 export const Home = ({ user }) => {
-    const [jobBoard, setJobBoard] = useState(true);
-    const [addJob, setAddJob] = useState(false);
-    const [addUser, setAddUser] = useState(false);
-    const [addTruck, setAddTruck] = useState(false);
-    const [viewCustomers, setViewCustomers] = useState(false)
-    const [pages, setPages] = useState([jobBoard, addJob, addUser, addTruck, viewCustomers]);
+    const [jobBoard, setJobBoard] = useState(true); // The job board page
+    const [addJob, setAddJob] = useState(false); // The add job page
+    const [addUser, setAddUser] = useState(false); // The add user page
+    const [addTruck, setAddTruck] = useState(false); // The add truck page
+    const [viewCustomers, setViewCustomers] = useState(false); // The view customers page
+    const [pages, setPages] = useState([jobBoard, addJob, addUser, addTruck, viewCustomers]); // Keeps track of all the pages to know which is currently open
 
     /**
      * @description Switches the state of which page to display based off the index
