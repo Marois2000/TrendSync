@@ -61,6 +61,9 @@ export const MakePayment = ({ customer, onClose, toast }) => {
      * @param {*} value The current payment entered
      */
     const updateBalance = (value) => {
+        if(value < 0) {
+            value = 0;
+        }
         setPayment(value);
         setRemaining(customer.balance - value);
     }

@@ -112,7 +112,7 @@ export const CrewContainer = ({ crews, setCrew, date, schedule, setSchedule, set
                     {editingCrew ? 
                         (fullCrew.map((crew, index) => {
                             return (
-                                <div className="flex items-center justify-between w-full bg-grey-200">
+                                <div className="flex items-center justify-between w-full bg-grey-200" key={index}>
                                     <h1 className="text-sm text-white font-bold">{crew.last_name + ", " + crew.first_name}</h1>
                                     <button onClick={() => openModal(crew)} className="bg-primary text-white border-blue-700 border-2 px-2 z-30">Edit</button>
                                 </div>

@@ -144,13 +144,13 @@ export const JobContainer = ({ jobs, setJobs, date, schedule, setSchedule, setFu
                         {editingJobs ? 
                             (fullJobs.map((job, index) => {
                                 return (
-                                    <ClickableJobCard crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} update={() => openModal(job)} />
+                                    <ClickableJobCard key={index} crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} update={() => openModal(job)} />
                                 )
                             }))
                         : 
-                            (jobs.map((job) => {
+                            (jobs.map((job, index) => {
                                 return(
-                                    <JobCard crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type={'job'} job={job} comingFromSlot={false} />
+                                    <JobCard key={index} crew={job.num_crew} trucks={job.num_trucks} pickup={job.pickup} dropoff={job.dropoff} customerId={job.customer_id} type={'job'} job={job} comingFromSlot={false} />
                                 )
                             }))
                         }

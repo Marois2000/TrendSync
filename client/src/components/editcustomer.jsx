@@ -7,6 +7,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { MyButton } from "./mybutton";
 import { InputField } from "./inputfield";
 import { path } from "../path";
+import { ToastContainer, toast } from 'react-toastify';
 
 /**
  * @description A pop up for editing customers

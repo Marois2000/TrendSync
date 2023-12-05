@@ -122,7 +122,7 @@ export const ViewCustomers = () => {
                         <tbody >
                                 {filteredCustomers.map((customer, index) => {
                                     return(
-                                        <tr className="border-b-2">
+                                        <tr className="border-b-2" key={index}>
                                             <td className="py-8 text-lg">{customer.first_name.replace(/^\w/, c => c.toUpperCase()) + " " + customer.last_name.replace(/^\w/, c => c.toUpperCase())}</td>
                                             <td>{new Intl.NumberFormat('en-US', {
                                                     style: 'currency',

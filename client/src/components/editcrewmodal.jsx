@@ -99,7 +99,7 @@ export const EditCrewModel = ({ crewMember, onClose }) => {
         <div className="fixed h-[85%] w-[99%] z-50 bg-opacity-30 bg-black justify-center items-center flex">
             <div className="bg-background w-[70%] rounded-lg overflow-hidden">
                 <div className="w-full bg-primary justify-between items-center flex mb-5">
-                    <h1 className="text-white text-3xl p-2">Add Customer</h1>
+                    <h1 className="text-white text-3xl p-2">Edit Crew Member</h1>
                     <button className="text-white p-3 text-3xl" onClick={() => onClose(false)}><FontAwesomeIcon icon={faTimes} /></button>
                 </div>
 
